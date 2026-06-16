@@ -22,6 +22,9 @@
     ],
     "client": [
       "net.spidereye.animancy.AnimancyModClient"
+    ],
+    "fabric-datagen": [
+      "net.spidereye.animancy.datagen.ModDataGeneration"
     ]
   },
   "mixins": [
