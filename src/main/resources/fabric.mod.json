@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "animancy",
+  "version": "${version}",
+
+  "name": "Animancy",
+  "description": "Adds soul magic and Necromancy to Minecraft",
+  "authors": [
+    "Spidereye"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "MIT License",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.spidereye.animancy.AnimancyMod"
+    ],
+    "client": [
+      "net.spidereye.animancy.AnimancyModClient"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
