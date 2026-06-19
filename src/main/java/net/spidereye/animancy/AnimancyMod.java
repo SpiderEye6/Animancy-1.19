@@ -3,6 +3,7 @@ package net.spidereye.animancy;
 import net.fabricmc.api.ModInitializer;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.networking.ModPackets;
+import net.spidereye.animancy.util.ModLootTableModifiers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class AnimancyMod implements ModInitializer {
 		// Proceed with mild caution.
 		ModItems.registerModItems();
 
+		ModLootTableModifiers.modifyLootTables();
 		ModPackets.registerC2SPackets();
 	}
 }

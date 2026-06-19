@@ -7,10 +7,11 @@ import net.minecraft.util.registry.Registry;
 import net.spidereye.animancy.AnimancyMod;
 import net.spidereye.animancy.item.custom.AnimancyDataCheckerItem;
 import net.spidereye.animancy.item.custom.SoulDataCheckerItem;
+import net.spidereye.animancy.item.custom.SoulShardItem;
 
 public class ModItems {
     public static final Item SOUL_SHARD = registerItem("soul_shard",
-            new Item(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+            new SoulShardItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
