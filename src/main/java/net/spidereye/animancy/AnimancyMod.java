@@ -1,9 +1,12 @@
 package net.spidereye.animancy;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.networking.ModPackets;
+import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.ModLootTableModifiers;
+import net.spidereye.animancy.util.SoulData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,5 +26,12 @@ public class AnimancyMod implements ModInitializer {
 
 		ModLootTableModifiers.modifyLootTables();
 		ModPackets.registerC2SPackets();
+
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			boolean isAnimancer = SoulData.isAnimancer((IEntityDataSaver) oldPlayer);
+			double soulSize = SoulData.getSoul((IEntityDataSaver) oldPlayer);
+			SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+			SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize);
+		});
 	}
 }
