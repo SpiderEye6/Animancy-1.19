@@ -24,15 +24,20 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
     @Shadow
     public abstract boolean isUndead();
 
+    @Shadow
+    public abstract float getMaxHealth();
+
     @Inject(method = "onKilledBy", at = @At("HEAD"))
     protected void injectOnKilledBy(LivingEntity adversary, CallbackInfo ci) {
-        World world = adversary.getWorld();
-        if (!world.isClient() && adversary instanceof PlayerEntity) {
-            if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
-                if (this.isUndead()) {
-                    handleSoulShardSpawns(adversary);
-                } else {
-
+        if (adversary != null) {
+            World world = adversary.getWorld();
+            if (!world.isClient() && adversary instanceof PlayerEntity) {
+                if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
+                    if (this.isUndead()) {
+                        handleSoulShardSpawns(adversary);
+                    } else {
+                        handleSoulSpawns(adversary);
+                    }
                 }
             }
         }
@@ -49,5 +54,14 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
         ItemStack mainHand = adversary.getMainHandStack();
         return (mainHand.getItem() == Items.NETHERITE_SWORD) ||
                 (mainHand.getItem() == Items.NETHERITE_HOE); // TODO: Change for animantic weapons.
+    }
+
+    private void handleSoulSpawns(LivingEntity adversary) {
+        World world = adversary.getWorld();
+        BlockPos pos = this.getBlockPos();
+        ItemStack itemStack = new ItemStack(ModItems.SOUL);
+        itemStack.getOrCreateNbt().putDouble("size", (double) this.getMaxHealth());
+        ItemEntity soul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+        world.spawnEntity(soul);
     }
 }
