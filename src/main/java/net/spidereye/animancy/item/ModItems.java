@@ -5,16 +5,15 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.spidereye.animancy.AnimancyMod;
-import net.spidereye.animancy.item.custom.AnimancyDataCheckerItem;
-import net.spidereye.animancy.item.custom.SoulDataCheckerItem;
-import net.spidereye.animancy.item.custom.SoulItem;
-import net.spidereye.animancy.item.custom.SoulShardItem;
+import net.spidereye.animancy.item.custom.*;
 
 public class ModItems {
     public static final Item SOUL_SHARD = registerItem("soul_shard",
             new SoulShardItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
     public static final Item SOUL = registerItem("soul",
             new SoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+    public static final Item REVENANT_SOUL = registerItem("revenant_soul",
+            new RevenantSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));

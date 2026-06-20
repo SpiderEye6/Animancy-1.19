@@ -21,6 +21,8 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.SOUL_SHARD, Models.GENERATED);
         itemModelGenerator.register(ModItems.SOUL, Models.GENERATED);
+        itemModelGenerator.register(ModItems.REVENANT_SOUL, Models.GENERATED);
+
         itemModelGenerator.register(ModItems.SOUL_CHECKER_DEBUG, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ANIMANCY_CHECKER_DEBUG, Models.HANDHELD);
     }

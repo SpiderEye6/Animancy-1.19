@@ -2,6 +2,7 @@ package net.spidereye.animancy;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.world.GameRules;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.networking.ModPackets;
 import net.spidereye.animancy.util.IEntityDataSaver;
@@ -30,8 +31,13 @@ public class AnimancyMod implements ModInitializer {
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
 			boolean isAnimancer = SoulData.isAnimancer((IEntityDataSaver) oldPlayer);
 			double soulSize = SoulData.getSoul((IEntityDataSaver) oldPlayer);
-			SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
-			SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize);
+			if (!oldPlayer.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
+				SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+				SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize / 2.0D);
+			} else {
+				SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+				SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize);
+			}
 		});
 	}
 }

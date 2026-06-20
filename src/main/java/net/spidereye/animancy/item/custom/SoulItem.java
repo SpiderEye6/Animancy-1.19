@@ -42,26 +42,30 @@ public class SoulItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            if (SoulData.isAnimancer((IEntityDataSaver) user) &&
-                    user.getOffHandStack().getItem() != ModItems.SOUL_SHARD) {
-
+            if (SoulData.isAnimancer((IEntityDataSaver) user)) {
                 ItemStack mainHand = user.getMainHandStack();
-                double size = getSoulSize(mainHand);
-                if (size < 0) {
-                    user.sendMessage(Text.literal("How did you get a negative soul??"));
-                    return super.use(world, user, hand);
-                }
+                ItemStack offHand = user.getOffHandStack();
 
-                if (!user.isSneaking()) {
-                    SoulData.addSoul((IEntityDataSaver) user, size);
-                    user.heal((float) size/ 100.0f);
-                    mainHand.decrement(1);
+                if (offHand.getItem() != ModItems.SOUL_SHARD) {
+                    double size = getSoulSize(mainHand);
+
+                    if (!user.isSneaking()) {
+                        SoulData.addSoul((IEntityDataSaver) user, size);
+                        user.heal((float) size/ 100.0f);
+                        mainHand.decrement(1);
+                    } else {
+                        SoulData.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
+                        user.heal((float) size/ 100.0f * mainHand.getCount());
+                        mainHand.decrement(mainHand.getCount());
+                    }
                 } else {
-                    SoulData.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
-                    user.heal((float) size/ 100.0f * mainHand.getCount());
-                    mainHand.decrement(mainHand.getCount());
+                    ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
+                    revenantSoul.getOrCreateNbt().putDouble("size", getSoulSize(mainHand));
+                    user.getInventory().insertStack(revenantSoul);
+                    mainHand.decrement(1);
+                    offHand.decrement(1);
                 }
-            } // TODO: Add turn into revenant soul
+            }
         }
 
         return super.use(world, user, hand);
