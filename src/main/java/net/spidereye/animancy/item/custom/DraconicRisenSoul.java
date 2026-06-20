@@ -2,7 +2,6 @@ package net.spidereye.animancy.item.custom;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,15 +13,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DragonSoulItem extends Item {
-    public DragonSoulItem(Settings settings) {
+public class DraconicRisenSoul extends Item {
+    public DraconicRisenSoul(Settings settings) {
         super(settings);
     }
 
@@ -33,24 +31,24 @@ public class DragonSoulItem extends Item {
     }
 
     @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
+            EntityType.ENDER_DRAGON.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                    SpawnReason.MOB_SUMMONED, true, false); // TODO: Change to a tamed Draconic Risen.
+            context.getStack().decrement(1);
+            return ActionResult.SUCCESS;
+        }
+
+        return ActionResult.PASS;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
             if (SoulData.isAnimancer((IEntityDataSaver) user)) {
-                ItemStack mainHand = user.getMainHandStack();
-                ItemStack offHand = user.getOffHandStack();
-
-                if (offHand.getItem() != ModItems.SOUL_SHARD) {
-                    SoulData.addSoul((IEntityDataSaver) user, soulSize);
-                    user.heal((float) soulSize/ 100.0f);
-                    mainHand.decrement(1);
-                } else {
-                    ItemStack revenantSoul = new ItemStack(ModItems.DRACONIC_RISEN_SOUL);
-                    if (!user.getInventory().insertStack(revenantSoul)) {
-                        world.spawnEntity(new ItemEntity(world, user.getX(), user.getY(), user.getZ(), revenantSoul));
-                    }
-                    mainHand.decrement(1);
-                    offHand.decrement(1);
-                }
+                SoulData.addSoul((IEntityDataSaver) user, soulSize);
+                user.heal((float) soulSize/ 100.0f);
+                user.getMainHandStack().decrement(1);
             }
         }
 
@@ -59,7 +57,7 @@ public class DragonSoulItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("item.tooltip.animancy.dragon_soul"));
+        tooltip.add(Text.translatable("item.tooltip.animancy.draconic_risen"));
 
         super.appendTooltip(stack, world, tooltip, context);
     }

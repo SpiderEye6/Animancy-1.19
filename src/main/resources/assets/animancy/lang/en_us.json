@@ -3,8 +3,10 @@
   "item.animancy.soul": "Soul",
   "item.animancy.revenant_soul": "Revenant Soul",
   "item.animancy.dragon_soul": "Dragon Soul",
+  "item.animancy.draconic_risen_soul": "Draconic Risen Soul",
 
   "item.tooltip.animancy.dragon_soul": "Soul Size: 200",
+  "item.tooltip.animancy.draconic_risen": "Soul Size: 200",
 
   "item.animancy.soul_checker_debug": "Soul Data Debug Item",
   "item.animancy.animancy_checker_debug": "Animancer Data Debug Item",

@@ -38,7 +38,7 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
                 if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
                     if (this.isUndead()) {
                         handleSoulShardSpawns(adversary);
-                    } else if (this.getMaxHealth() <= 200.0f) { // Anything with 200 or more health is a dragonsoul i guess
+                    } else if (this.getMaxHealth() >= 200.0f) { // Anything with 200 or more health is a dragonsoul i guess
                         handleDragonSoulSpawns(adversary);
                     } else {
                         handleSoulSpawns(adversary);
