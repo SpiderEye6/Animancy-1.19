@@ -3,6 +3,7 @@ package net.spidereye.animancy.item.custom;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -61,7 +62,9 @@ public class SoulItem extends Item {
                 } else {
                     ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
                     revenantSoul.getOrCreateNbt().putDouble("size", getSoulSize(mainHand));
-                    user.getInventory().insertStack(revenantSoul);
+                    if (!user.getInventory().insertStack(revenantSoul)) {
+                        world.spawnEntity(new ItemEntity(world, user.getX(), user.getY(), user.getZ(), revenantSoul));
+                    }
                     mainHand.decrement(1);
                     offHand.decrement(1);
                 }
