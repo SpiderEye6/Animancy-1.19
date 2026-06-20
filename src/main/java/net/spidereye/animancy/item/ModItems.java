@@ -3,21 +3,24 @@ package net.spidereye.animancy.item;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.spidereye.animancy.AnimancyMod;
 import net.spidereye.animancy.item.custom.*;
 
 public class ModItems {
     public static final Item SOUL_SHARD = registerItem("soul_shard",
-            new SoulShardItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+            new SoulShardItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).rarity(Rarity.UNCOMMON)));
     public static final Item SOUL = registerItem("soul",
-            new SoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+            new SoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).rarity(Rarity.RARE)));
     public static final Item REVENANT_SOUL = registerItem("revenant_soul",
-            new RevenantSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+            new RevenantSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).rarity(Rarity.RARE)));
     public static final Item DRAGON_SOUL = registerItem("dragon_soul",
-            new DragonSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new DragonSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).rarity(Rarity.EPIC)));
     public static final Item DRACONIC_RISEN_SOUL = registerItem("draconic_risen_soul",
-            new DraconicRisenSoul(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new DraconicRisenSoul(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).rarity(Rarity.EPIC)));
+    public static final Item SOUL_STEEL_INGOT = registerItem("soul_steel_ingot",
+            new Item(new FabricItemSettings().group(ModItemGroup.ANIMANCY).fireproof().rarity(Rarity.RARE)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));

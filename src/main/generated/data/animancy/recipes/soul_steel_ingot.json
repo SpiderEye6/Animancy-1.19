@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "R": {
+      "item": "animancy:revenant_soul"
+    },
+    "S": {
+      "item": "animancy:soul_shard"
+    }
+  },
+  "pattern": [
+    "SN",
+    "RS"
+  ],
+  "result": {
+    "item": "animancy:soul_steel_ingot"
+  }
+}

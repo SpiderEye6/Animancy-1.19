@@ -2,7 +2,12 @@ package net.spidereye.animancy.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.data.server.RecipeProvider;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
+import net.spidereye.animancy.item.ModItems;
 
 import java.util.function.Consumer;
 
@@ -13,6 +18,18 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
 
     @Override
     protected void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
-
+        ShapedRecipeJsonBuilder.create(ModItems.SOUL_STEEL_INGOT)
+                .pattern("SN")
+                .pattern("RS")
+                .input('N', Items.NETHERITE_INGOT)
+                .input('S', ModItems.SOUL_SHARD)
+                .input('R', ModItems.REVENANT_SOUL)
+                .criterion(RecipeProvider.hasItem(Items.NETHERITE_INGOT),
+                        RecipeProvider.conditionsFromItem(Items.NETHERITE_INGOT))
+                .criterion(RecipeProvider.hasItem(ModItems.SOUL_SHARD),
+                        RecipeProvider.conditionsFromItem(ModItems.SOUL_SHARD))
+                .criterion(RecipeProvider.hasItem(ModItems.REVENANT_SOUL),
+                        RecipeProvider.conditionsFromItem(ModItems.REVENANT_SOUL))
+                .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_INGOT)));
     }
 }
