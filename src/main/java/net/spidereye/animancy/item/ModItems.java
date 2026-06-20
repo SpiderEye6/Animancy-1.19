@@ -14,6 +14,8 @@ public class ModItems {
             new SoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
     public static final Item REVENANT_SOUL = registerItem("revenant_soul",
             new RevenantSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY)));
+    public static final Item DRAGON_SOUL = registerItem("dragon_soul",
+            new DragonSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));

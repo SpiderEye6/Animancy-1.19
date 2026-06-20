@@ -1,11 +1,14 @@
 package net.spidereye.animancy.mixin;
 
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.command.CommandOutput;
+import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,12 +38,21 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
                 if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
                     if (this.isUndead()) {
                         handleSoulShardSpawns(adversary);
+                    } else if (this.getMaxHealth() <= 200.0f) { // Anything with 200 or more health is a dragonsoul i guess
+                        handleDragonSoulSpawns(adversary);
                     } else {
                         handleSoulSpawns(adversary);
                     }
                 }
             }
         }
+    }
+
+    private void handleDragonSoulSpawns(LivingEntity adversary) {
+        World world = adversary.getWorld();
+        BlockPos pos = this.getBlockPos();
+        ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.DRAGON_SOUL));
+        world.spawnEntity(soulShard);
     }
 
     private void handleSoulShardSpawns(LivingEntity adversary) {
@@ -50,12 +62,6 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
         world.spawnEntity(soulShard);
     }
 
-    private boolean holdingAnimanticWeapon(LivingEntity adversary) {
-        ItemStack mainHand = adversary.getMainHandStack();
-        return (mainHand.getItem() == Items.NETHERITE_SWORD) ||
-                (mainHand.getItem() == Items.NETHERITE_HOE); // TODO: Change for animantic weapons.
-    }
-
     private void handleSoulSpawns(LivingEntity adversary) {
         World world = adversary.getWorld();
         BlockPos pos = this.getBlockPos();
@@ -63,5 +69,11 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
         itemStack.getOrCreateNbt().putDouble("size", (double) this.getMaxHealth());
         ItemEntity soul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
         world.spawnEntity(soul);
+    }
+
+    private boolean holdingAnimanticWeapon(LivingEntity adversary) {
+        ItemStack mainHand = adversary.getMainHandStack();
+        return (mainHand.getItem() == Items.NETHERITE_SWORD) ||
+                (mainHand.getItem() == Items.NETHERITE_HOE); // TODO: Change for animantic weapons.
     }
 }
