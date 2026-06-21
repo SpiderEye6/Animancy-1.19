@@ -3,6 +3,7 @@ package net.spidereye.animancy;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.world.GameRules;
+import net.spidereye.animancy.block.ModBlocks;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.networking.ModPackets;
 import net.spidereye.animancy.util.IEntityDataSaver;
@@ -24,6 +25,7 @@ public class AnimancyMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
 
 		ModLootTableModifiers.modifyLootTables();
 		ModPackets.registerC2SPackets();

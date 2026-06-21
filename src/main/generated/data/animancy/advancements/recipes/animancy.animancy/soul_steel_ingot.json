@@ -1,36 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_ingot": {
+    "has_soul_steel_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:netherite_ingot"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_revenant_soul": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "animancy:revenant_soul"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_soul_shard": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "animancy:soul_shard"
+              "animancy:soul_steel_block"
             ]
           }
         ]
@@ -46,9 +22,7 @@
   },
   "requirements": [
     [
-      "has_netherite_ingot",
-      "has_soul_shard",
-      "has_revenant_soul",
+      "has_soul_steel_block",
       "has_the_recipe"
     ]
   ],

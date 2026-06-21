@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
+import net.spidereye.animancy.block.ModBlocks;
 import net.spidereye.animancy.item.ModItems;
 
 import java.util.function.Consumer;
@@ -33,7 +34,7 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                         RecipeProvider.conditionsFromItem(ModItems.SOUL_SHARD))
                 .criterion(RecipeProvider.hasItem(ModItems.REVENANT_SOUL),
                         RecipeProvider.conditionsFromItem(ModItems.REVENANT_SOUL))
-                .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_INGOT)));
+                .offerTo(exporter, new Identifier("soul_steel_ingot_from_base_materials"));
 
         ShapedRecipeJsonBuilder.create(ModItems.SOUL_STEEL_SWORD)
                 .pattern("I")
@@ -61,5 +62,7 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                 .criterion(RecipeProvider.hasItem(Items.STICK),
                         RecipeProvider.conditionsFromItem(Items.STICK))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.ANIMANTIC_WAR_SCYTHE)));
+
+        offerReversibleCompactingRecipes(exporter, ModItems.SOUL_STEEL_INGOT, ModBlocks.SOUL_STEEL_BLOCK);
     }
 }

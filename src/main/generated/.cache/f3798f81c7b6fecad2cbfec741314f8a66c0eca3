@@ -1,11 +1,14 @@
-// 1.19.2	2026-06-21T15:09:01.2984848	Models
-8ccc5f6020d01dcfc5531b1ec5cc959f65cdce62 assets\animancy\models\item\soul_steel_ingot.json
-a4c5807e8b90ca61285cb44fa7000d8dc598e66f assets\animancy\models\item\revenant_soul.json
-48f5017d1a8d7878832c5e9ecb6afa5b7f91bbed assets\animancy\models\item\soul.json
-da2e66977c0090a789eff2acd6dbf773e3c6a4cf assets\animancy\models\item\animantic_war_scythe.json
+// 1.19.2	2026-06-21T15:20:34.7833096	Models
 f79259858c43124a14855d34f11efe5d992fe18a assets\animancy\models\item\draconic_risen_soul.json
 16ce11ec9c5c9e48458fa500c8de9d181d14f570 assets\animancy\models\item\soul_steel_sword.json
 0ae80ed9b00796dcd9185f281aebdf2e717f0eb2 assets\animancy\models\item\soul_shard.json
 8ce510e4b0b8b84aac9c4cf9c8cd87321532bf3f assets\animancy\models\item\dragon_soul.json
 7f53f537b06c9f7520fd8310600fdc4a81e8c1ed assets\animancy\models\item\soul_checker_debug.json
 e06672b70fff5528684a92b257da0c691f14461f assets\animancy\models\item\animancy_checker_debug.json
+8ccc5f6020d01dcfc5531b1ec5cc959f65cdce62 assets\animancy\models\item\soul_steel_ingot.json
+a4c5807e8b90ca61285cb44fa7000d8dc598e66f assets\animancy\models\item\revenant_soul.json
+48f5017d1a8d7878832c5e9ecb6afa5b7f91bbed assets\animancy\models\item\soul.json
+da2e66977c0090a789eff2acd6dbf773e3c6a4cf assets\animancy\models\item\animantic_war_scythe.json
+fd5cdc7b366f239f95efe1d8573120f226c66bf0 assets\animancy\models\block\soul_steel_block.json
+7aea1b0dcfd3ee709dbee6ec128d743c8ef312a8 assets\animancy\models\item\soul_steel_block.json
+6f0f21b835b9878716822577bd88b24ebe7c4ee4 assets\animancy\blockstates\soul_steel_block.json

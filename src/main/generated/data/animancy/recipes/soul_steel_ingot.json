@@ -1,21 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "N": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "R": {
-      "item": "animancy:revenant_soul"
-    },
-    "S": {
-      "item": "animancy:soul_shard"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "animancy:soul_steel_block"
     }
-  },
-  "pattern": [
-    "SN",
-    "RS"
   ],
   "result": {
+    "count": 9,
     "item": "animancy:soul_steel_ingot"
   }
 }

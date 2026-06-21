@@ -1,7 +1,11 @@
-// 1.19.2	2026-06-21T15:09:01.3004858	Recipes
-11a09ebd0138de218bcc3d19d7f505d9ef1649ed data\animancy\recipes\soul_steel_ingot.json
+// 1.19.2	2026-06-21T15:20:34.78431	Recipes
+55a455fce4bb911c133e50502cff2be5bcc612fa data\animancy\recipes\soul_steel_ingot.json
+8aaefdc4a84de08ec75b897f30bee9051c623ae5 data\animancy\advancements\recipes\animancy.animancy\soul_steel_ingot_from_base_materials.json
 7f878decf9d9d3c1cf17cf7bbb1940da8df90488 data\animancy\recipes\animantic_war_scythe.json
-4a3f42c54bcd1e5b8b25dc7eb6111994fbb8adfb data\animancy\advancements\recipes\animancy.animancy\soul_steel_ingot.json
+11a09ebd0138de218bcc3d19d7f505d9ef1649ed data\animancy\recipes\soul_steel_ingot_from_base_materials.json
+f41e19e3fb4f69adb2d8530a463173d0d90a1b2f data\animancy\advancements\recipes\animancy.animancy\soul_steel_ingot.json
 dca9a4519bc2132ad298fde1ea5139aede37b1aa data\animancy\advancements\recipes\animancy.animancy\animantic_war_scythe.json
 fb6bc7f728e7366f693c3086f3b73bc574286ca0 data\animancy\advancements\recipes\animancy.animancy\soul_steel_sword.json
 475e5383f8fb82037b667d5f1632f00cae9ece8e data\animancy\recipes\soul_steel_sword.json
+b65481fd1fceee8260994e469e55486c173899d8 data\animancy\recipes\soul_steel_block.json
+6996171514351d4b20fab6cd06e3166cb4db68c4 data\animancy\advancements\recipes\animancy.animancy\soul_steel_block.json
