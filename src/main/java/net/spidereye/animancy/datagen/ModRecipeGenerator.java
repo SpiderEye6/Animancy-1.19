@@ -5,7 +5,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.RecipeProvider;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.SmithingRecipeJsonBuilder;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.spidereye.animancy.item.ModItems;
 
@@ -31,5 +34,14 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                 .criterion(RecipeProvider.hasItem(ModItems.REVENANT_SOUL),
                         RecipeProvider.conditionsFromItem(ModItems.REVENANT_SOUL))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_INGOT)));
+
+        SmithingRecipeJsonBuilder.create(Ingredient.ofItems(Items.DIAMOND_SWORD),
+                Ingredient.ofItems(ModItems.SOUL_STEEL_INGOT),
+                ModItems.SOUL_STEEL_SWORD)
+                .criterion(RecipeProvider.hasItem(Items.DIAMOND_SWORD),
+                        RecipeProvider.conditionsFromItem(Items.DIAMOND_SWORD))
+                .criterion(RecipeProvider.hasItem(ModItems.SOUL_STEEL_INGOT),
+                        RecipeProvider.conditionsFromItem(ModItems.SOUL_STEEL_INGOT))
+                .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_SWORD)));
     }
 }

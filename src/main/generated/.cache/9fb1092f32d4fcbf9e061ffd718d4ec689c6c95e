@@ -1,3 +1,5 @@
-// 1.19.2	2026-06-21T11:36:29.9811085	Recipes
+// 1.19.2	2026-06-21T11:53:59.5845267	Recipes
 11a09ebd0138de218bcc3d19d7f505d9ef1649ed data\animancy\recipes\soul_steel_ingot.json
 4a3f42c54bcd1e5b8b25dc7eb6111994fbb8adfb data\animancy\advancements\recipes\animancy.animancy\soul_steel_ingot.json
+8f5f3c45bb3717df8ab43ca6966f6b94189ea657 data\animancy\advancements\recipes\animancy.animancy\soul_steel_sword.json
+018f37a2e52d01ba33d14f766e5b3d5876b47b6e data\animancy\recipes\soul_steel_sword.json
