@@ -62,7 +62,7 @@ public class SoulShardItem extends Item {
                         mainHand.addEnchantment(Enchantments.LOOTING, 3); // TODO: Change to Soul Steel Sword.
                         // Add Sound Effect?
                         offHand.decrement(1);
-                    } else if (mainHand.getItem() == Items.NETHERITE_HOE) {
+                    } else if (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
                         mainHand.addEnchantment(Enchantments.FORTUNE, 3); // TODO: Change to Animantic War Scythe.
                         // Add Sound Effect?
                         offHand.decrement(1);

@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DraconicRisenSoul extends Item {
-    public DraconicRisenSoul(Settings settings) {
+public class DraconicRisenSoulItem extends Item {
+    public DraconicRisenSoulItem(Settings settings) {
         super(settings);
     }
 

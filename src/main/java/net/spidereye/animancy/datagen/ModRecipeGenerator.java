@@ -35,13 +35,31 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                         RecipeProvider.conditionsFromItem(ModItems.REVENANT_SOUL))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_INGOT)));
 
-        SmithingRecipeJsonBuilder.create(Ingredient.ofItems(Items.DIAMOND_SWORD),
-                Ingredient.ofItems(ModItems.SOUL_STEEL_INGOT),
-                ModItems.SOUL_STEEL_SWORD)
-                .criterion(RecipeProvider.hasItem(Items.DIAMOND_SWORD),
-                        RecipeProvider.conditionsFromItem(Items.DIAMOND_SWORD))
+        ShapedRecipeJsonBuilder.create(ModItems.SOUL_STEEL_SWORD)
+                .pattern("I")
+                .pattern("I")
+                .pattern("S")
+                .input('I', ModItems.SOUL_STEEL_INGOT)
+                .input('S', Items.STICK)
                 .criterion(RecipeProvider.hasItem(ModItems.SOUL_STEEL_INGOT),
                         RecipeProvider.conditionsFromItem(ModItems.SOUL_STEEL_INGOT))
+                .criterion(RecipeProvider.hasItem(Items.STICK),
+                        RecipeProvider.conditionsFromItem(Items.STICK))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_SWORD)));
+
+        ShapedRecipeJsonBuilder.create(ModItems.ANIMANTIC_WAR_SCYTHE)
+                .pattern("IIS")
+                .pattern(" D ")
+                .pattern("S  ")
+                .input('I', ModItems.SOUL_STEEL_INGOT)
+                .input('D', ModItems.DRACONIC_RISEN_SOUL)
+                .input('S', Items.STICK)
+                .criterion(RecipeProvider.hasItem(ModItems.SOUL_STEEL_INGOT),
+                        RecipeProvider.conditionsFromItem(ModItems.SOUL_STEEL_INGOT))
+                .criterion(RecipeProvider.hasItem(ModItems.DRACONIC_RISEN_SOUL),
+                        RecipeProvider.conditionsFromItem(ModItems.DRACONIC_RISEN_SOUL))
+                .criterion(RecipeProvider.hasItem(Items.STICK),
+                        RecipeProvider.conditionsFromItem(Items.STICK))
+                .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.ANIMANTIC_WAR_SCYTHE)));
     }
 }

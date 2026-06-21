@@ -19,13 +19,16 @@ public class ModItems {
     public static final Item DRAGON_SOUL = registerItem("dragon_soul",
             new DragonSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).rarity(Rarity.EPIC)));
     public static final Item DRACONIC_RISEN_SOUL = registerItem("draconic_risen_soul",
-            new DraconicRisenSoul(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).rarity(Rarity.EPIC)));
+            new DraconicRisenSoulItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).rarity(Rarity.EPIC)));
 
     public static final Item SOUL_STEEL_INGOT = registerItem("soul_steel_ingot",
             new Item(new FabricItemSettings().group(ModItemGroup.ANIMANCY).fireproof()));
     public static final Item SOUL_STEEL_SWORD = registerItem("soul_steel_sword",
-            new SwordItem(ModToolMaterial.SOUL_STEEL, 8, 1.6f,
-                    new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new SwordItem(ModToolMaterial.SOUL_STEEL, 3, -2.4f,
+                    new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).fireproof()));
+    public static final Item ANIMANTIC_WAR_SCYTHE = registerItem("animantic_war_scythe",
+            new AnimanticWarScytheItem(ModToolMaterial.SOUL_STEEL, 5, -3.0f,
+                    new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).fireproof().rarity(Rarity.EPIC)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));

@@ -26,6 +26,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.DRACONIC_RISEN_SOUL, Models.GENERATED);
         itemModelGenerator.register(ModItems.SOUL_STEEL_INGOT, Models.GENERATED);
         itemModelGenerator.register(ModItems.SOUL_STEEL_SWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.ANIMANTIC_WAR_SCYTHE, Models.HANDHELD);
 
         itemModelGenerator.register(ModItems.SOUL_CHECKER_DEBUG, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ANIMANCY_CHECKER_DEBUG, Models.HANDHELD);
