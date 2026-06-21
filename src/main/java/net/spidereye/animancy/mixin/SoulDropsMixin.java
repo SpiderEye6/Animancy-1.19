@@ -73,7 +73,7 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
 
     private boolean holdingAnimanticWeapon(LivingEntity adversary) {
         ItemStack mainHand = adversary.getMainHandStack();
-        return (mainHand.getItem() == Items.NETHERITE_SWORD) ||
+        return (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) ||
                 (mainHand.getItem() == Items.NETHERITE_HOE); // TODO: Change for animantic weapons.
     }
 }
