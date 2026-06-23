@@ -63,11 +63,18 @@ public class SoulItem extends Item {
                 } else {
                     ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
                     SoulData.setSoul(revenantSoul, SoulData.getSoul(mainHand));
+                    if (!user.isSneaking()) {
+                        mainHand.decrement(1);
+                        offHand.decrement(1);
+                    } else {
+                        int count = Math.min(mainHand.getCount(), offHand.getCount());
+                        revenantSoul.setCount(count);
+                        mainHand.decrement(count);
+                        offHand.decrement(count);
+                    }
                     if (!user.getInventory().insertStack(revenantSoul)) {
                         world.spawnEntity(new ItemEntity(world, user.getX(), user.getY(), user.getZ(), revenantSoul));
                     }
-                    mainHand.decrement(1);
-                    offHand.decrement(1);
                 }
             }
         }
