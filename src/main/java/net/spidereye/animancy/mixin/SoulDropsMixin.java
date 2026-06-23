@@ -1,14 +1,11 @@
 package net.spidereye.animancy.mixin;
 
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.command.CommandOutput;
-import net.minecraft.text.Text;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -65,10 +62,14 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
     private void handleSoulSpawns(LivingEntity adversary) {
         World world = adversary.getWorld();
         BlockPos pos = this.getBlockPos();
-        ItemStack itemStack = new ItemStack(ModItems.SOUL);
-        itemStack.getOrCreateNbt().putDouble("size", (double) this.getMaxHealth());
-        ItemEntity soul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
-        world.spawnEntity(soul);
+        if (this.getMaxHealth() >= 1.0) {
+            ItemStack itemStack = new ItemStack(ModItems.SOUL);
+            SoulData.setSoul(itemStack, this.getMaxHealth());
+            ItemEntity soul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+            world.spawnEntity(soul);
+        } else {
+            handleSoulShardSpawns(adversary);
+        }
     }
 
     private boolean holdingAnimanticWeapon(LivingEntity adversary) {

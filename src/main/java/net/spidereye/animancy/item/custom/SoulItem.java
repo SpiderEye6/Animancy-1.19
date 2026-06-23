@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -61,7 +62,7 @@ public class SoulItem extends Item {
                     }
                 } else {
                     ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
-                    revenantSoul.getOrCreateNbt().putDouble("size", getSoulSize(mainHand));
+                    SoulData.setSoul(revenantSoul, SoulData.getSoul(mainHand));
                     if (!user.getInventory().insertStack(revenantSoul)) {
                         world.spawnEntity(new ItemEntity(world, user.getX(), user.getY(), user.getZ(), revenantSoul));
                     }

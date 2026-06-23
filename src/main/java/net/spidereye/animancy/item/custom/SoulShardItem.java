@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulData;
@@ -58,14 +59,16 @@ public class SoulShardItem extends Item {
                 if (SoulData.isAnimancer((IEntityDataSaver) user)) {
                     ItemStack mainHand = user.getMainHandStack();
                     ItemStack offHand = user.getOffHandStack();
-                    if (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) {
-                        mainHand.addEnchantment(Enchantments.LOOTING, 3); // TODO: Change to Soul Steel Sword.
-                        // Add Sound Effect?
-                        offHand.decrement(1);
-                    } else if (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
-                        mainHand.addEnchantment(Enchantments.FORTUNE, 3); // TODO: Change to Animantic War Scythe.
-                        // Add Sound Effect?
-                        offHand.decrement(1);
+                    if (!SoulData.hasEnchantment(mainHand, ModEnchantments.REND_SOUL)) {
+                        if (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) {
+                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1); // TODO: Change to Soul Steel Sword.
+                            // Add Sound Effect?
+                            offHand.decrement(1);
+                        } else if (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
+                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1); // TODO: Change to Animantic War Scythe.
+                            // Add Sound Effect?
+                            offHand.decrement(1);
+                        }
                     }
                 }
             }

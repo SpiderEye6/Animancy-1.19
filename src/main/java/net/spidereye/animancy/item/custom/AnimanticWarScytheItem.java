@@ -8,6 +8,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.spidereye.animancy.enchantment.ModEnchantments;
+import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulData;
 
@@ -19,6 +21,11 @@ public class AnimanticWarScytheItem extends HoeItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && SoulData.isAnimancer((IEntityDataSaver) user)) {
+            if (user.getOffHandStack().getItem() == ModItems.SOUL_SHARD &&
+                !SoulData.hasEnchantment(user.getMainHandStack(), ModEnchantments.REND_SOUL)) {
+                return super.use(world, user, hand);
+            }
+
             double velocity = 0.001D;
             Vec3d lookDir = user.getRotationVector();
             lookDir.normalize().multiply(velocity);
