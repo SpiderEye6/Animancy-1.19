@@ -1,18 +1,21 @@
 package net.spidereye.animancy.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.spidereye.animancy.AnimancyMod;
+import net.spidereye.animancy.networking.packet.RemoveSoulShardC2SPacket;
 import net.spidereye.animancy.networking.packet.SyncAnimancerDataS2CPacket;
 import net.spidereye.animancy.networking.packet.SyncSoulDataS2CPacket;
 
 public class ModPackets {
     public static final Identifier SOUL_DATA_SYNC = new Identifier(AnimancyMod.MOD_ID, "soul_sync");
     public static final Identifier ANIMANCER_DATA_SYNC = new Identifier(AnimancyMod.MOD_ID, "animancer_sync");
+    public static final Identifier REMOVE_SOUL_SHARD = new Identifier(AnimancyMod.MOD_ID, "remove_soul_shard");
 
 
     public static void registerC2SPackets() {
-
+        ServerPlayNetworking.registerGlobalReceiver(REMOVE_SOUL_SHARD, RemoveSoulShardC2SPacket::recieve);
     }
 
     public static void registerS2CPackets() {

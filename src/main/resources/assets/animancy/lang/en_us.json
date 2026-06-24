@@ -19,5 +19,8 @@
   "enchantment.animancy.rend_soul": "Rend Soul",
   "enchantment.animancy.rend_soul.warning": "Incorrect Vessel",
 
-  "itemGroup.animancy.animancy": "Animancy"
+  "itemGroup.animancy.animancy": "Animancy",
+
+  "key.category.animancy.keybinds": "Animancy",
+  "key.animancy.remove_soul_shard_key": "Remove Soul Shard Key"
 }
