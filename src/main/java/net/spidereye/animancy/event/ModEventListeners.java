@@ -3,6 +3,7 @@ package net.spidereye.animancy.event;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -44,7 +45,8 @@ public class ModEventListeners {
     public static ActionResult rendSoulEnchantmentImplementation(PlayerEntity player, World world, Hand hand, Entity entity, HitResult hitResult) {
         if (!world.isClient() && entity instanceof LivingEntity victim && SoulData.isAnimancer((IEntityDataSaver) player)) {
             ItemStack weapon = player.getMainHandStack();
-            if (SoulData.hasEnchantment(weapon, ModEnchantments.REND_SOUL)) {
+            if (SoulData.hasEnchantment(weapon, ModEnchantments.REND_SOUL) &&
+                    !victim.isUndead() && !(victim instanceof EnderDragonEntity)) {
                 double soulDamage = 1.0D;
                 ItemStack soulPiece;
                 if (weapon.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
@@ -64,6 +66,7 @@ public class ModEventListeners {
                             .formatted(Formatting.RED).formatted(Formatting.BOLD), true);
                     return ActionResult.SUCCESS;
                 }
+
 
                 SoulData.addHealthModifier(victim, soulDamage * -1, "rend_soul");
                 world.spawnEntity(new ItemEntity(world, victim.getX(), victim.getY(), victim.getZ(), soulPiece));
