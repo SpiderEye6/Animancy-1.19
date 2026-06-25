@@ -35,21 +35,15 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
                 if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
                     if (this.isUndead()) {
                         handleSoulShardSpawns(adversary);
-                    } else if (this.getMaxHealth() >= 200.0f) { // Anything with 200 or more health is a dragonsoul i guess
-                        handleDragonSoulSpawns(adversary);
                     } else {
-                        handleSoulSpawns(adversary);
+                        ItemStack soul = SoulData.makeSoulItemVariant(this.getMaxHealth());
+                        BlockPos pos = this.getBlockPos();
+                        ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
+                        world.spawnEntity(soulShard);
                     }
                 }
             }
         }
-    }
-
-    private void handleDragonSoulSpawns(LivingEntity adversary) {
-        World world = adversary.getWorld();
-        BlockPos pos = this.getBlockPos();
-        ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.DRAGON_SOUL));
-        world.spawnEntity(soulShard);
     }
 
     private void handleSoulShardSpawns(LivingEntity adversary) {
@@ -59,22 +53,8 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
         world.spawnEntity(soulShard);
     }
 
-    private void handleSoulSpawns(LivingEntity adversary) {
-        World world = adversary.getWorld();
-        BlockPos pos = this.getBlockPos();
-        if (this.getMaxHealth() >= 1.0) {
-            ItemStack itemStack = new ItemStack(ModItems.SOUL);
-            SoulData.setSoul(itemStack, this.getMaxHealth());
-            ItemEntity soul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
-            world.spawnEntity(soul);
-        } else {
-            handleSoulShardSpawns(adversary);
-        }
-    }
-
     private boolean holdingAnimanticWeapon(LivingEntity adversary) {
         ItemStack mainHand = adversary.getMainHandStack();
-        return (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) ||
-                (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE);
+        return SoulData.isAnimanticWeapon(mainHand);
     }
 }

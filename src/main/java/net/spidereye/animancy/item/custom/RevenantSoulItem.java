@@ -65,6 +65,7 @@ public class RevenantSoulItem extends Item {
                 user.heal((float) size/ 100.0f * mainHand.getCount());
                 mainHand.decrement(mainHand.getCount());
             }
+            SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
         }
 
         return super.use(world, user, hand);

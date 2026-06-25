@@ -51,6 +51,7 @@ public class DragonSoulItem extends Item {
                     mainHand.decrement(1);
                     offHand.decrement(1);
                 }
+                SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
             }
         }
 

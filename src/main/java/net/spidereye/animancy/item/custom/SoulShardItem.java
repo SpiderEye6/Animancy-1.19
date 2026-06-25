@@ -55,6 +55,7 @@ public class SoulShardItem extends Item {
                     SoulData.addSoul((IEntityDataSaver) user, (double) count);
                     mainHand.decrement(count);
                 }
+                SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
             } else {
                 if (SoulData.isAnimancer((IEntityDataSaver) user)) {
                     ItemStack mainHand = user.getMainHandStack();

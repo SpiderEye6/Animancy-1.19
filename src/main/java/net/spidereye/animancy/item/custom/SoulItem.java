@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -60,6 +61,7 @@ public class SoulItem extends Item {
                         user.heal((float) size/ 100.0f * mainHand.getCount());
                         mainHand.decrement(mainHand.getCount());
                     }
+                    SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
                 } else {
                     ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
                     SoulData.setSoul(revenantSoul, SoulData.getSoul(mainHand));

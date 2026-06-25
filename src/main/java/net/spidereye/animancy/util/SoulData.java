@@ -2,22 +2,26 @@ package net.spidereye.animancy.util;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.spidereye.animancy.enchantment.ModEnchantments;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.spidereye.animancy.item.ModItems;
+import net.spidereye.animancy.item.ModToolMaterial;
 import net.spidereye.animancy.networking.ModPackets;
 
 import java.util.Map;
@@ -63,6 +67,7 @@ public class SoulData {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeDouble(soul);
         ServerPlayNetworking.send(player, ModPackets.SOUL_DATA_SYNC, buffer);
+        syncAnimancer(isAnimancer((IEntityDataSaver) player), player);
     }
 
     public static double addSoul(ItemStack item, ServerPlayerEntity owner, double amount) {
@@ -141,5 +146,44 @@ public class SoulData {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeBoolean(isAnimancer);
         ServerPlayNetworking.send(player, ModPackets.ANIMANCER_DATA_SYNC, buffer);
+    }
+
+    public static void setSyncedWithServer(IEntityDataSaver player, boolean synced) {
+        NbtCompound nbt = player.getPersistentData();
+        nbt.putBoolean("should_sync_on_join", synced);
+    }
+
+    public static boolean syncedWithServer(IEntityDataSaver player) {
+        NbtCompound nbt = player.getPersistentData();
+        return nbt.getBoolean("should_sync_on_join");
+    }
+
+    public static void syncOnJoin(IEntityDataSaver player) {
+        ClientPlayNetworking.send(ModPackets.SYNC_ON_JOIN, PacketByteBufs.create());
+        setSyncedWithServer(player, true);
+    }
+
+    public static void playEatSoulSound(ServerWorld world, BlockPos pos, float volume, float pitch) {
+        world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.PLAYERS, volume, pitch);
+    }
+
+    public static ItemStack makeSoulItemVariant(double size) {
+        ItemStack soul;
+        if (size >= 200) {
+            soul = new ItemStack(ModItems.DRAGON_SOUL);
+        } else if (size > 1.0) {
+            soul = new ItemStack(ModItems.SOUL);
+            setSoul(soul, size);
+        } else {
+            soul = new ItemStack(ModItems.SOUL_SHARD);
+        }
+        return soul;
+    }
+
+    public static boolean isAnimanticWeapon(ItemStack item) {
+        if (item.getItem() instanceof ToolItem weapon) {
+            return weapon.getMaterial() == ModToolMaterial.SOUL_STEEL;
+        }
+        return false;
     }
 }

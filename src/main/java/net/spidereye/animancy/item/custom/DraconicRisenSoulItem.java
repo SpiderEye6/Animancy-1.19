@@ -50,6 +50,7 @@ public class DraconicRisenSoulItem extends Item {
                 user.heal((float) soulSize/ 100.0f);
                 user.getMainHandStack().decrement(1);
             }
+            SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
         }
 
         return super.use(world, user, hand);
