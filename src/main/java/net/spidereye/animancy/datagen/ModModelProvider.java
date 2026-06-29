@@ -31,5 +31,6 @@ public class ModModelProvider extends FabricModelProvider {
 
         itemModelGenerator.register(ModItems.SOUL_CHECKER_DEBUG, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ANIMANCY_CHECKER_DEBUG, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.SOUL_RIP_COUNTER_CHECKER_DEBUG, Models.HANDHELD);
     }
 }

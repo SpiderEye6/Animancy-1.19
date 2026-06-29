@@ -7,35 +7,31 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.spidereye.animancy.AnimancyMod;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.RaycastUtil;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
-public class AnimancyHudOverlay implements HudRenderCallback {
+public class AnimancerHudOverlay implements HudRenderCallback {
     private static final Identifier SOUL_RIP_SOUL_SHARD_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
-            "textures/animancer/soul_rip_soul_shard_element.png");
+            "textures/gui/animancer/soul_rip_soul_shard_element.png");
     private static final Identifier SOUL_RIP_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
-            "textures/animancer/soul_rip_soul_element.png");
+            "textures/gui/animancer/soul_rip_soul_element.png");
     private static final Identifier SOUL_RIP_DRAGON_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
-            "textures/animancer/soul_rip_dragon_soul_element.png");
+            "textures/gui/animancer/soul_rip_dragon_soul_element.png");
     private static final Identifier SOUL_SIZE_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
-            "textures/animancer/soul_size_element.png");
+            "textures/gui/animancer/soul_size_element.png");
 
     @Override
     public void onHudRender(MatrixStack matrixStack, float tickDelta) {
         PlayerEntity player = MinecraftClient.getInstance().player;
-        if (player.isSpectator() || !SoulData.isAnimancer((IEntityDataSaver) player)) {
+        if (player.isSpectator() || !SoulUtil.isAnimancer((IEntityDataSaver) player)) {
             return;
         }
 
@@ -56,7 +52,7 @@ public class AnimancyHudOverlay implements HudRenderCallback {
 
     private void renderSoulSizeElement(MatrixStack matrixStack, float tickDelta, int x, int y) {
         PlayerEntity player = MinecraftClient.getInstance().player;
-        String soulSize = Integer.toString((int) Math.floor(SoulData.getSoul((IEntityDataSaver) player)));
+        String soulSize = Integer.toString((int) Math.floor(SoulUtil.getSoul((IEntityDataSaver) player)));
         int color = 0xFFFFFFFF;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -70,7 +66,7 @@ public class AnimancyHudOverlay implements HudRenderCallback {
     private void renderCanSoulRip(MatrixStack matrixStack, float tickDelta, int x, int y) {
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
-        double maxDistance = (SoulData.getSoul((IEntityDataSaver) player)) / 100;
+        double maxDistance = SoulUtil.soulRange((IEntityDataSaver) player);
         Entity entity = RaycastUtil.raycastEntity(client.cameraEntity, maxDistance, 1.0f);
         int color = 0xFFFFFFFF;
         if (entity == null) {
@@ -85,11 +81,11 @@ public class AnimancyHudOverlay implements HudRenderCallback {
         if (victim.isUndead()) {
             soulType = (new ItemStack(ModItems.SOUL_SHARD)).getItem();
         } else {
-            soulType = SoulData.makeSoulItemVariant(victimSoulSize).getItem();
+            soulType = SoulUtil.makeSoulItemVariant(victimSoulSize).getItem();
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 0.5f); // TODO: Make alpha dependent on variable
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if (soulType == ModItems.SOUL_SHARD) {
             RenderSystem.setShaderTexture(0, SOUL_RIP_SOUL_SHARD_ELEMENT);
         } else if (soulType == ModItems.SOUL) {

@@ -10,18 +10,20 @@ import net.minecraft.world.World;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
 
-public class AnimancyDataCheckerItem extends Item {
-    public AnimancyDataCheckerItem(Settings settings) {
+public class SoulRipCounterDataCheckerItem extends Item {
+    public SoulRipCounterDataCheckerItem(Settings settings) {
         super(settings);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
-            if (hand == Hand.MAIN_HAND) {
-                SoulUtil.setAnimancer((IEntityDataSaver) user, !SoulUtil.isAnimancer((IEntityDataSaver) user));
+            if (hand == Hand.OFF_HAND) {
+                SoulUtil.setSoulRipCounter((IEntityDataSaver) user, 0);
+            } else if (!user.isSneaking()) {
+                SoulUtil.addSoulRipCounter((IEntityDataSaver) user, 5);
             } else {
-                user.sendMessage(Text.literal("Animancer: " + SoulUtil.isAnimancer((IEntityDataSaver) user)));
+                SoulUtil.removeSoulRipCounter((IEntityDataSaver) user, 1);
             }
         }
 

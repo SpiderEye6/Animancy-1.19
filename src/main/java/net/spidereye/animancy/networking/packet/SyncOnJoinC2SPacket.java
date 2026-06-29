@@ -6,15 +6,17 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
 public class SyncOnJoinC2SPacket {
     public static void recieve(MinecraftServer server, ServerPlayerEntity entity, ServerPlayNetworkHandler handler,
                                                              PacketByteBuf buf, PacketSender responseSender) {
-        double soul = SoulData.getSoul((IEntityDataSaver) entity);
-        boolean isAnimancer = SoulData.isAnimancer((IEntityDataSaver) entity);
+        double soul = SoulUtil.getSoul((IEntityDataSaver) entity);
+        boolean isAnimancer = SoulUtil.isAnimancer((IEntityDataSaver) entity);
+        double soulRipCounter = SoulUtil.getSoulRipCounter((IEntityDataSaver) entity);
 
-        SoulData.syncSoul(soul, entity);
-        SoulData.syncAnimancer(isAnimancer, entity);
+        SoulUtil.syncSoul(soul, entity);
+        SoulUtil.syncAnimancer(isAnimancer, entity);
+        SoulUtil.syncSoulRipCounter(soulRipCounter, entity);
     }
 }

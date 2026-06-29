@@ -7,18 +7,28 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.spidereye.animancy.networking.ModPackets;
+import net.spidereye.animancy.util.IEntityDataSaver;
+import net.spidereye.animancy.util.SoulUtil;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyInputHandler {
     public static final String KEY_CATEGORY_ANIMANCY = "key.category.animancy.keybinds";
     public static final String REMOVE_SOUL_SHARD_KEY = "key.animancy.remove_soul_shard_key";
+    public static final String SOUL_RIP_KEY = "key.animancy.soul_rip_key";
 
     public static KeyBinding removeSoulShardKey;
+    public static KeyBinding soulRipKey;
 
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (removeSoulShardKey.wasPressed()) {
                 ClientPlayNetworking.send(ModPackets.REMOVE_SOUL_SHARD, PacketByteBufs.create());
+            }
+        });
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (soulRipKey.isPressed() && SoulUtil.isAnimancer((IEntityDataSaver) client.player)) {
+                ClientPlayNetworking.send(ModPackets.SOUL_RIP, PacketByteBufs.create());
             }
         });
     }
@@ -28,6 +38,13 @@ public class KeyInputHandler {
                 REMOVE_SOUL_SHARD_KEY,
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_G,
+                KEY_CATEGORY_ANIMANCY
+        ));
+
+        soulRipKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                SOUL_RIP_KEY,
+                InputUtil.Type.MOUSE,
+                GLFW.GLFW_MOUSE_BUTTON_RIGHT,
                 KEY_CATEGORY_ANIMANCY
         ));
 

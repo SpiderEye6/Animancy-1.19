@@ -15,7 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -52,20 +52,20 @@ public class RevenantSoulItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient() && hand == Hand.MAIN_HAND && SoulData.isAnimancer((IEntityDataSaver) user)) {
+        if (!world.isClient() && hand == Hand.MAIN_HAND && SoulUtil.isAnimancer((IEntityDataSaver) user)) {
             ItemStack mainHand = user.getMainHandStack();
             double size = getSoulSize(mainHand);
 
             if (!user.isSneaking()) {
-                SoulData.addSoul((IEntityDataSaver) user, size);
+                SoulUtil.addSoul((IEntityDataSaver) user, size);
                 user.heal((float) size/ 100.0f);
                 mainHand.decrement(1);
             } else {
-                SoulData.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
+                SoulUtil.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
                 user.heal((float) size/ 100.0f * mainHand.getCount());
                 mainHand.decrement(mainHand.getCount());
             }
-            SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
+            SoulUtil.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
         }
 
         return super.use(world, user, hand);

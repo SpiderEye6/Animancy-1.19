@@ -10,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -25,34 +24,34 @@ import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
 public class ModEventListeners {
     // Handles transfering of soul data upon death.
     public static void transferSoulDataOnDeath(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
-        boolean isAnimancer = SoulData.isAnimancer((IEntityDataSaver) oldPlayer);
-        double soulSize = SoulData.getSoul((IEntityDataSaver) oldPlayer);
+        boolean isAnimancer = SoulUtil.isAnimancer((IEntityDataSaver) oldPlayer);
+        double soulSize = SoulUtil.getSoul((IEntityDataSaver) oldPlayer);
         if (!oldPlayer.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-            SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
-            SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize / 2.0D);
+            SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+            SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize / 2.0D);
         } else {
-            SoulData.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
-            SoulData.setSoul((IEntityDataSaver) newPlayer, soulSize);
+            SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+            SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize);
         }
     }
 
     // Handles implementation of the Rend Soul enchantment because onTargetDamaged() gets called twice for some reason.
     public static ActionResult rendSoulEnchantmentImplementation(PlayerEntity player, World world, Hand hand, Entity entity, HitResult hitResult) {
-        if (!world.isClient() && entity instanceof LivingEntity victim && SoulData.isAnimancer((IEntityDataSaver) player)) {
+        if (!world.isClient() && entity instanceof LivingEntity victim && SoulUtil.isAnimancer((IEntityDataSaver) player)) {
             ItemStack weapon = player.getMainHandStack();
-            if (SoulData.hasEnchantment(weapon, ModEnchantments.REND_SOUL) &&
+            if (SoulUtil.hasEnchantment(weapon, ModEnchantments.REND_SOUL) &&
                     !victim.isUndead() && !(victim instanceof EnderDragonEntity)) {
                 double soulDamage = 1.0D;
                 ItemStack soulPiece;
                 if (weapon.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
                     soulDamage = ((MiningToolItem) weapon.getItem()).getAttackDamage();
                     soulPiece = new ItemStack(ModItems.SOUL);
-                    SoulData.setSoul(soulPiece, soulDamage);
+                    SoulUtil.setSoul(soulPiece, soulDamage);
                 } else if (weapon.getItem() == ModItems.SOUL_STEEL_SWORD) {
                     soulPiece = new ItemStack(ModItems.SOUL_SHARD);
                 } else {
@@ -68,7 +67,7 @@ public class ModEventListeners {
                 }
 
 
-                SoulData.addHealthModifier(victim, soulDamage * -1, "rend_soul");
+                SoulUtil.addHealthModifier(victim, soulDamage * -1, "rend_soul");
                 world.spawnEntity(new ItemEntity(world, victim.getX(), victim.getY(), victim.getZ(), soulPiece));
             }
         }

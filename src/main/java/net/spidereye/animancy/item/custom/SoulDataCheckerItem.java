@@ -8,7 +8,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
 public class SoulDataCheckerItem extends Item {
     public SoulDataCheckerItem(Settings settings) {
@@ -19,14 +19,14 @@ public class SoulDataCheckerItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
             if (hand == Hand.OFF_HAND) {
-                SoulData.setSoul((IEntityDataSaver) user, 20);
+                SoulUtil.setSoul((IEntityDataSaver) user, 20);
             } else if (!user.isSneaking()) {
-                SoulData.addSoul((IEntityDataSaver) user, 1);
+                SoulUtil.addSoul((IEntityDataSaver) user, 1);
             } else {
-                SoulData.removeSoul((IEntityDataSaver) user, 1);
+                SoulUtil.removeSoul((IEntityDataSaver) user, 1);
             }
 
-            user.sendMessage(Text.literal("Soul: " + SoulData.getSoul((IEntityDataSaver) user)));
+            user.sendMessage(Text.literal("Soul: " + SoulUtil.getSoul((IEntityDataSaver) user)));
         }
 
         return super.use(world, user, hand);

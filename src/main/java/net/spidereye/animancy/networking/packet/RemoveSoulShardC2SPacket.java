@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
 public class RemoveSoulShardC2SPacket {
     public static void recieve(MinecraftServer server, ServerPlayerEntity entity, ServerPlayNetworkHandler handler,
@@ -20,7 +20,7 @@ public class RemoveSoulShardC2SPacket {
         World world = entity.getWorld();
 
         if (entity.isSneaking()) {
-            int soulSize = (int) SoulData.getSoul((IEntityDataSaver) entity);
+            int soulSize = (int) SoulUtil.getSoul((IEntityDataSaver) entity);
             if (soulSize <= 64) {
                 count = soulSize - 1;
             } else {
@@ -31,7 +31,7 @@ public class RemoveSoulShardC2SPacket {
         }
 
         shard.setCount(count);
-        SoulData.removeSoul((IEntityDataSaver) entity, count);
+        SoulUtil.removeSoul((IEntityDataSaver) entity, count);
 
         if (!entity.getInventory().insertStack(shard)) {
             world.spawnEntity(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), shard));

@@ -11,6 +11,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.nbt.NbtCompound;
@@ -26,7 +28,7 @@ import net.spidereye.animancy.networking.ModPackets;
 
 import java.util.Map;
 
-public class SoulData {
+public class SoulUtil {
     public static double addSoul(IEntityDataSaver player, double amount) {
         NbtCompound nbt = player.getPersistentData();
         double soul = nbt.getDouble("soul_size");
@@ -113,6 +115,91 @@ public class SoulData {
         ServerPlayNetworking.send(owner, ModPackets.SOUL_DATA_SYNC, buffer);
     }
 
+    public static double addSoulRipCounter(IEntityDataSaver entity, double amount) {
+        NbtCompound nbt = entity.getPersistentData();
+        double soulRipCounter = nbt.getDouble("soulrip_counter");
+        soulRipCounter += amount;
+        nbt.putDouble("soulrip_counter", soulRipCounter);
+        if (entity instanceof PlayerEntity player) {
+            syncSoulRipCounter(soulRipCounter, (ServerPlayerEntity) player);
+        }
+        return soulRipCounter;
+    }
+
+    public static double removeSoulRipCounter(IEntityDataSaver entity, double amount) {
+        NbtCompound nbt = entity.getPersistentData();
+        double soulRipCounter = nbt.getDouble("soulrip_counter");
+        if (soulRipCounter - amount <= 0) {
+            soulRipCounter = 0.0D;
+        } else {
+            soulRipCounter -= amount;
+        }
+        nbt.putDouble("soulrip_counter", soulRipCounter);
+        if (entity instanceof PlayerEntity player) {
+            syncSoulRipCounter(soulRipCounter, (ServerPlayerEntity) player);
+        }
+        return soulRipCounter;
+    }
+
+    public static double setSoulRipCounter(IEntityDataSaver entity, double amount) {
+        NbtCompound nbt = entity.getPersistentData();
+        double soulRipCounter = amount;
+        nbt.putDouble("soulrip_counter", soulRipCounter);
+        if (entity instanceof PlayerEntity player) {
+            syncSoulRipCounter(soulRipCounter, (ServerPlayerEntity) player);
+        }
+        return soulRipCounter;
+    }
+
+    public static double getSoulRipCounter(IEntityDataSaver entity) {
+        NbtCompound nbt = entity.getPersistentData();
+        double soulRipCounter = nbt.getDouble("soulrip_counter");
+        return soulRipCounter;
+    }
+
+    public static void syncSoulRipCounter(double soulRipCounter, ServerPlayerEntity player) {
+        PacketByteBuf buffer = PacketByteBufs.create();
+        buffer.writeDouble(soulRipCounter);
+        ServerPlayNetworking.send(player, ModPackets.SYNC_SOUL_RIP_COUNTER, buffer);
+    }
+
+    public static float getSoulRipPercentage(IEntityDataSaver entity) {
+        double soulRipCounter = getSoulRipCounter(entity);
+        double soulSize = getSoul(entity);
+        double maxHealth = ((LivingEntity) entity).getMaxHealth();
+        float percentage;
+
+        if (isAnimancer(entity) && (soulSize > maxHealth)) {
+            percentage = (float) (soulRipCounter / soulSize);
+        } else {
+            percentage = (float) (soulRipCounter / maxHealth);
+        }
+
+        if (percentage > 1.0f) {
+            percentage = 1.0f;
+        } else if (percentage < 0.0f) {
+            percentage = 0.0f;
+        }
+
+        return percentage;
+    }
+
+    public static double soulRange(IEntityDataSaver entity) {
+        return getSoul(entity) / 100;
+    }
+
+    public static double soulPower(IEntityDataSaver entity) {
+        return getSoul(entity) / 100;
+    }
+
+    public static void emitSoulGroan(LivingEntity entity, float volume) {
+        if (entity.getWorld() instanceof ServerWorld world) {
+            BlockPos pos = entity.getBlockPos();
+            float pitch = (float) (0.5 + (0.5 * getSoulRipCounter((IEntityDataSaver) entity)));
+            world.playSound(null, pos, SoundEvents.BLOCK_NOTE_BLOCK_BASS, SoundCategory.PLAYERS, volume, pitch);
+        }
+    }
+
     public static boolean hasEnchantment(ItemStack item, Enchantment enchantment) {
         if (item.hasEnchantments()) {
             Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(item);
@@ -185,5 +272,11 @@ public class SoulData {
             return weapon.getMaterial() == ModToolMaterial.SOUL_STEEL;
         }
         return false;
+    }
+
+    public static void killWithAnimancy(PlayerEntity attacker, LivingEntity victim) {
+        attacker.getWorld().playSound(null, victim.getBlockPos(), SoundEvents.BLOCK_SCULK_SHRIEKER_SHRIEK,
+                SoundCategory.PLAYERS, 1.0f, 0.1f);
+        victim.damage(DamageSource.player(attacker), Float.MAX_VALUE);
     }
 }

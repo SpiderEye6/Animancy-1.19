@@ -1,22 +1,18 @@
 package net.spidereye.animancy.item.custom;
 
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,12 +31,12 @@ public class DragonSoulItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            if (SoulData.isAnimancer((IEntityDataSaver) user)) {
+            if (SoulUtil.isAnimancer((IEntityDataSaver) user)) {
                 ItemStack mainHand = user.getMainHandStack();
                 ItemStack offHand = user.getOffHandStack();
 
                 if (offHand.getItem() != ModItems.SOUL_SHARD) {
-                    SoulData.addSoul((IEntityDataSaver) user, soulSize);
+                    SoulUtil.addSoul((IEntityDataSaver) user, soulSize);
                     user.heal((float) soulSize/ 100.0f);
                     mainHand.decrement(1);
                 } else {
@@ -51,7 +47,7 @@ public class DragonSoulItem extends Item {
                     mainHand.decrement(1);
                     offHand.decrement(1);
                 }
-                SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
+                SoulUtil.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
             }
         }
 

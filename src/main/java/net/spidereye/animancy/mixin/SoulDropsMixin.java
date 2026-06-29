@@ -5,14 +5,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandOutput;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.entity.EntityLike;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,11 +31,11 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
         if (adversary != null) {
             World world = adversary.getWorld();
             if (!world.isClient() && adversary instanceof PlayerEntity) {
-                if (SoulData.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
+                if (SoulUtil.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
                     if (this.isUndead()) {
                         handleSoulShardSpawns(adversary);
                     } else {
-                        ItemStack soul = SoulData.makeSoulItemVariant(this.getMaxHealth());
+                        ItemStack soul = SoulUtil.makeSoulItemVariant(this.getMaxHealth());
                         BlockPos pos = this.getBlockPos();
                         ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
                         world.spawnEntity(soulShard);
@@ -55,6 +54,6 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
 
     private boolean holdingAnimanticWeapon(LivingEntity adversary) {
         ItemStack mainHand = adversary.getMainHandStack();
-        return SoulData.isAnimanticWeapon(mainHand);
+        return SoulUtil.isAnimanticWeapon(mainHand);
     }
 }

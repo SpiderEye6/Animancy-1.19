@@ -1,17 +1,11 @@
 package net.spidereye.animancy.item.custom;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -19,7 +13,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,7 +39,7 @@ public class SoulItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            if (SoulData.isAnimancer((IEntityDataSaver) user)) {
+            if (SoulUtil.isAnimancer((IEntityDataSaver) user)) {
                 ItemStack mainHand = user.getMainHandStack();
                 ItemStack offHand = user.getOffHandStack();
 
@@ -53,18 +47,18 @@ public class SoulItem extends Item {
                     double size = getSoulSize(mainHand);
 
                     if (!user.isSneaking()) {
-                        SoulData.addSoul((IEntityDataSaver) user, size);
+                        SoulUtil.addSoul((IEntityDataSaver) user, size);
                         user.heal((float) size/ 100.0f);
                         mainHand.decrement(1);
                     } else {
-                        SoulData.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
+                        SoulUtil.addSoul((IEntityDataSaver) user, size * mainHand.getCount());
                         user.heal((float) size/ 100.0f * mainHand.getCount());
                         mainHand.decrement(mainHand.getCount());
                     }
-                    SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
+                    SoulUtil.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
                 } else {
                     ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
-                    SoulData.setSoul(revenantSoul, SoulData.getSoul(mainHand));
+                    SoulUtil.setSoul(revenantSoul, SoulUtil.getSoul(mainHand));
                     if (!user.isSneaking()) {
                         mainHand.decrement(1);
                         offHand.decrement(1);

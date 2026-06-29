@@ -34,6 +34,8 @@ public class ModItems {
             new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
     public static final Item ANIMANCY_CHECKER_DEBUG = registerItem("animancy_checker_debug",
             new AnimancyDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+    public static final Item SOUL_RIP_COUNTER_CHECKER_DEBUG = registerItem("soul_rip_counter_checker_debug",
+            new SoulRipCounterDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
 
 
 

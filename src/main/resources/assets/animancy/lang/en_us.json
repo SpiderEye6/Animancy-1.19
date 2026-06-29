@@ -15,6 +15,7 @@
 
   "item.animancy.soul_checker_debug": "Soul Data Debug Item",
   "item.animancy.animancy_checker_debug": "Animancer Data Debug Item",
+  "item.animancy.soul_rip_counter_checker_debug": "Soul Rip Counter Data Debug Item",
 
   "enchantment.animancy.rend_soul": "Rend Soul",
   "enchantment.animancy.rend_soul.warning": "Incorrect Vessel",

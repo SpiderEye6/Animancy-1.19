@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 
 public class AnimanticWarScytheItem extends HoeItem {
     public AnimanticWarScytheItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
@@ -20,9 +20,9 @@ public class AnimanticWarScytheItem extends HoeItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient() && SoulData.isAnimancer((IEntityDataSaver) user)) {
+        if (!world.isClient() && SoulUtil.isAnimancer((IEntityDataSaver) user)) {
             if (user.getOffHandStack().getItem() == ModItems.SOUL_SHARD &&
-                !SoulData.hasEnchantment(user.getMainHandStack(), ModEnchantments.REND_SOUL)) {
+                !SoulUtil.hasEnchantment(user.getMainHandStack(), ModEnchantments.REND_SOUL)) {
                 return super.use(world, user, hand);
             }
 

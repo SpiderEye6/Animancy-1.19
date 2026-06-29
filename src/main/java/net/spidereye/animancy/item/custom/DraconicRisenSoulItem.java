@@ -14,7 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.util.IEntityDataSaver;
-import net.spidereye.animancy.util.SoulData;
+import net.spidereye.animancy.util.SoulUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,12 +45,12 @@ public class DraconicRisenSoulItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            if (SoulData.isAnimancer((IEntityDataSaver) user)) {
-                SoulData.addSoul((IEntityDataSaver) user, soulSize);
+            if (SoulUtil.isAnimancer((IEntityDataSaver) user)) {
+                SoulUtil.addSoul((IEntityDataSaver) user, soulSize);
                 user.heal((float) soulSize/ 100.0f);
                 user.getMainHandStack().decrement(1);
             }
-            SoulData.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
+            SoulUtil.playEatSoulSound((ServerWorld) world, user.getBlockPos(), 0.8f, 0.7f);
         }
 
         return super.use(world, user, hand);
