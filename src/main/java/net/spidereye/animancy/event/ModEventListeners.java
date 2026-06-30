@@ -17,11 +17,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
+import net.spidereye.animancy.entity.custom.DregZombieEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
@@ -69,6 +71,24 @@ public class ModEventListeners {
 
                 SoulUtil.addHealthModifier(victim, soulDamage * -1, "rend_soul");
                 world.spawnEntity(new ItemEntity(world, victim.getX(), victim.getY(), victim.getZ(), soulPiece));
+            }
+        }
+
+        return ActionResult.PASS;
+    }
+
+    public static ActionResult retrieveSoulShardFromDreg(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+        if (!world.isClient() && hand == Hand.MAIN_HAND) {
+            if (entity instanceof DregZombieEntity dreg) {
+                if (dreg.getOwner() == player && SoulUtil.isAnimancer((IEntityDataSaver) player) && dreg.isAlive()) {
+                    ItemStack soulShard = new ItemStack(ModItems.SOUL_SHARD);
+                    if (player.getInventory().insertStack(soulShard)) {
+                        world.spawnEntity(new ItemEntity(world, dreg.getX(), dreg.getY(), dreg.getZ(), soulShard));
+                    }
+                    dreg.kill();
+
+                    return ActionResult.SUCCESS;
+                }
             }
         }
 

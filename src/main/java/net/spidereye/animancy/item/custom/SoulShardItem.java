@@ -1,6 +1,5 @@
 package net.spidereye.animancy.item.custom;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -12,8 +11,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
+import net.spidereye.animancy.entity.ModEntities;
+import net.spidereye.animancy.entity.custom.DregZombieEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
+import net.spidereye.animancy.util.RaycastUtil;
 import net.spidereye.animancy.util.SoulUtil;
 
 public class SoulShardItem extends Item {
@@ -24,19 +26,19 @@ public class SoulShardItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            EntityType.ZOMBIE.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false); // TODO: Change to a tamed Dreg.
+            ModEntities.DREG.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                    SpawnReason.MOB_SUMMONED, true, false).setOwner(context.getPlayer());
             context.getStack().decrement(1);
             return ActionResult.SUCCESS;
         }
 
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
-            if (hand == Hand.MAIN_HAND) {
+            if (hand == Hand.MAIN_HAND && !(RaycastUtil.raycastEntity() instanceof DregZombieEntity)) {
                 if (!SoulUtil.isAnimancer((IEntityDataSaver) user)) {
                     SoulUtil.setAnimancer((IEntityDataSaver) user, true);
                     SoulUtil.setSoul((IEntityDataSaver) user, 20.0D);
@@ -60,11 +62,11 @@ public class SoulShardItem extends Item {
                     ItemStack offHand = user.getOffHandStack();
                     if (!SoulUtil.hasEnchantment(mainHand, ModEnchantments.REND_SOUL)) {
                         if (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) {
-                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1); // TODO: Change to Soul Steel Sword.
+                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1);
                             // Add Sound Effect?
                             offHand.decrement(1);
                         } else if (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
-                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1); // TODO: Change to Animantic War Scythe.
+                            mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1);
                             // Add Sound Effect?
                             offHand.decrement(1);
                         }
