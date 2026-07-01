@@ -267,6 +267,19 @@ public class SoulUtil {
         return soul;
     }
 
+    public static ItemStack makeRevenantSoulItemVariant(double size) {
+        ItemStack revenantSoul;
+        if (size >= 200) {
+            revenantSoul = new ItemStack(ModItems.DRACONIC_RISEN_SOUL);
+        } else if (size > 1.0) {
+            revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
+            setSoul(revenantSoul, size);
+        } else {
+            revenantSoul = new ItemStack(ModItems.SOUL_SHARD);
+        }
+        return revenantSoul;
+    }
+
     public static boolean isAnimanticWeapon(ItemStack item) {
         if (item.getItem() instanceof ToolItem weapon) {
             return weapon.getMaterial() == ModToolMaterial.SOUL_STEEL;

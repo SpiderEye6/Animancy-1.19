@@ -2,6 +2,7 @@ package net.spidereye.animancy.item.custom;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,8 +15,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.spidereye.animancy.entity.ModEntities;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
+import org.apache.commons.compress.harmony.unpack200.bytecode.forms.IincForm;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -41,13 +45,16 @@ public class RevenantSoulItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            EntityType.ZOMBIE_VILLAGER.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false); // TODO: Change to a tamed Revenant.
+            RevenantEntity revenant = ModEntities.REVENANT.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                    SpawnReason.MOB_SUMMONED, true, false);
             context.getStack().decrement(1);
+            revenant.setOwner(context.getPlayer());
+            SoulUtil.addHealthModifier(revenant, getSoulSize(context.getStack()) - revenant.getMaxHealth(), "sync_soul");
+            SoulUtil.setAnimancer((IEntityDataSaver) revenant, true);
             return ActionResult.SUCCESS;
         }
 
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     @Override

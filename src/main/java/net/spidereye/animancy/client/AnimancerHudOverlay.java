@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.spidereye.animancy.AnimancyMod;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.RaycastUtil;
@@ -23,6 +24,8 @@ public class AnimancerHudOverlay implements HudRenderCallback {
             "textures/gui/animancer/soul_rip_soul_shard_element.png");
     private static final Identifier SOUL_RIP_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
             "textures/gui/animancer/soul_rip_soul_element.png");
+    private static final Identifier SOUL_RIP_REVENANT_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
+            "textures/gui/animancer/soul_rip_revenant_soul_element.png");
     private static final Identifier SOUL_RIP_DRAGON_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
             "textures/gui/animancer/soul_rip_dragon_soul_element.png");
     private static final Identifier SOUL_SIZE_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
@@ -78,8 +81,10 @@ public class AnimancerHudOverlay implements HudRenderCallback {
 
         double victimSoulSize = victim.getMaxHealth();
         Item soulType;
-        if (victim.isUndead()) {
+        if (victim.isUndead() && !(victim instanceof RevenantEntity)) {
             soulType = (new ItemStack(ModItems.SOUL_SHARD)).getItem();
+        } else if (victim instanceof RevenantEntity) {
+            soulType = SoulUtil.makeRevenantSoulItemVariant(victimSoulSize).getItem();
         } else {
             soulType = SoulUtil.makeSoulItemVariant(victimSoulSize).getItem();
         }
@@ -92,11 +97,13 @@ public class AnimancerHudOverlay implements HudRenderCallback {
             RenderSystem.setShaderTexture(0, SOUL_RIP_SOUL_ELEMENT);
         } else if (soulType == ModItems.DRACONIC_RISEN_SOUL) {
             RenderSystem.setShaderTexture(0, SOUL_RIP_DRAGON_SOUL_ELEMENT);
+        } else if (soulType == ModItems.REVENANT_SOUL) {
+            RenderSystem.setShaderTexture(0, SOUL_RIP_REVENANT_SOUL_ELEMENT);
         }
         DrawableHelper.drawTexture(matrixStack, x - 8, y - 237, 0, 0, 16, 16,
                 16, 16);
 
-        if (soulType == ModItems.SOUL) {
+        if (soulType == ModItems.SOUL || soulType == ModItems.REVENANT_SOUL) {
             DrawableHelper.drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer,
                     Integer.toString((int) victimSoulSize), x - 6, y - 237, color);
         }

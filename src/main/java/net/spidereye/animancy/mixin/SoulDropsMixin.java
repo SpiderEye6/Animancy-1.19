@@ -9,6 +9,7 @@ import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.entity.EntityLike;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
@@ -19,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOutput {
+public abstract class SoulDropsMixin {
     @Shadow
     public abstract boolean isUndead();
 
@@ -29,16 +30,23 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
     @Inject(method = "onKilledBy", at = @At("HEAD"))
     protected void injectOnKilledBy(LivingEntity adversary, CallbackInfo ci) {
         if (adversary != null) {
-            World world = adversary.getWorld();
-            if (!world.isClient() && adversary instanceof PlayerEntity) {
-                if (SoulUtil.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
-                    if (this.isUndead()) {
-                        handleSoulShardSpawns(adversary);
-                    } else {
-                        ItemStack soul = SoulUtil.makeSoulItemVariant(this.getMaxHealth());
-                        BlockPos pos = this.getBlockPos();
-                        ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
-                        world.spawnEntity(soulShard);
+            if ((Object) this instanceof LivingEntity entity) {
+                World world = adversary.getWorld();
+                if (!world.isClient() && SoulUtil.isAnimancer((IEntityDataSaver) adversary)) {
+                    if (SoulUtil.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
+                        if (this.isUndead() && !(entity instanceof RevenantEntity)) {
+                            handleSoulShardSpawns(adversary);
+                        } else if (entity instanceof RevenantEntity) {
+                            ItemStack soul = SoulUtil.makeRevenantSoulItemVariant(this.getMaxHealth());
+                            BlockPos pos = entity.getBlockPos();
+                            ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
+                            world.spawnEntity(soulShard);
+                        } else {
+                            ItemStack soul = SoulUtil.makeSoulItemVariant(this.getMaxHealth());
+                            BlockPos pos = entity.getBlockPos();
+                            ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
+                            world.spawnEntity(soulShard);
+                        }
                     }
                 }
             }
@@ -46,10 +54,12 @@ public abstract class SoulDropsMixin implements Nameable, EntityLike, CommandOut
     }
 
     private void handleSoulShardSpawns(LivingEntity adversary) {
-        World world = adversary.getWorld();
-        BlockPos pos = this.getBlockPos();
-        ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.SOUL_SHARD));
-        world.spawnEntity(soulShard);
+        if ((Object) this instanceof LivingEntity entity) {
+            World world = adversary.getWorld();
+            BlockPos pos = entity.getBlockPos();
+            ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.SOUL_SHARD));
+            world.spawnEntity(soulShard);
+        }
     }
 
     private boolean holdingAnimanticWeapon(LivingEntity adversary) {

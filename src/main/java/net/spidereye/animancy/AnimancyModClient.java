@@ -8,6 +8,7 @@ import net.spidereye.animancy.client.AnimancerHudOverlay;
 import net.spidereye.animancy.client.SoulRipHudOverlay;
 import net.spidereye.animancy.entity.ModEntities;
 import net.spidereye.animancy.entity.client.renderer.DregZombieRenderer;
+import net.spidereye.animancy.entity.client.renderer.RevenantRenderer;
 import net.spidereye.animancy.event.KeyInputHandler;
 import net.spidereye.animancy.event.PlayerClientStartWorldTickHandler;
 import net.spidereye.animancy.networking.ModPackets;
@@ -24,5 +25,6 @@ public class AnimancyModClient implements ClientModInitializer {
         ClientTickEvents.START_WORLD_TICK.register(new PlayerClientStartWorldTickHandler());
 
         EntityRendererRegistry.register(ModEntities.DREG, DregZombieRenderer::new);
+        EntityRendererRegistry.register(ModEntities.REVENANT, RevenantRenderer::new);
     }
 }

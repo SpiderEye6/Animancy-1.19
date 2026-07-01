@@ -8,11 +8,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.spidereye.animancy.AnimancyMod;
 import net.spidereye.animancy.entity.custom.DregZombieEntity;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 
 public class ModEntities {
     public static final EntityType<DregZombieEntity> DREG = Registry.register(
             Registry.ENTITY_TYPE, new Identifier(AnimancyMod.MOD_ID, "dreg"),
             FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DregZombieEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.0f, 2.0f)).build());
+
+    public static final EntityType<RevenantEntity> REVENANT = Registry.register(
+            Registry.ENTITY_TYPE, new Identifier(AnimancyMod.MOD_ID, "revenant"),
+            FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RevenantEntity::new)
                     .dimensions(EntityDimensions.fixed(1.0f, 2.0f)).build());
 
 

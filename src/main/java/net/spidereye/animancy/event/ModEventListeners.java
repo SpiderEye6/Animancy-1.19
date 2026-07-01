@@ -24,6 +24,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.entity.custom.DregZombieEntity;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
@@ -86,6 +87,25 @@ public class ModEventListeners {
                         world.spawnEntity(new ItemEntity(world, dreg.getX(), dreg.getY(), dreg.getZ(), soulShard));
                     }
                     dreg.kill();
+
+                    return ActionResult.SUCCESS;
+                }
+            }
+        }
+
+        return ActionResult.PASS;
+    }
+
+    public static ActionResult retrieveSoulFromRevenant(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+        if (!world.isClient() && hand == Hand.MAIN_HAND) {
+            if (entity instanceof RevenantEntity revenant) {
+                if (revenant.getOwner() == player && SoulUtil.isAnimancer((IEntityDataSaver) player) && revenant.isAlive()) {
+                    ItemStack revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
+                    SoulUtil.setSoul(revenantSoul, revenant.getMaxHealth());
+                    if (player.getInventory().insertStack(revenantSoul)) {
+                        world.spawnEntity(new ItemEntity(world, revenant.getX(), revenant.getY(), revenant.getZ(), revenantSoul));
+                    }
+                    revenant.kill();
 
                     return ActionResult.SUCCESS;
                 }

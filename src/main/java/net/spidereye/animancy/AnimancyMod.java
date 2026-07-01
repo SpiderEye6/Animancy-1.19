@@ -11,6 +11,7 @@ import net.spidereye.animancy.block.ModBlocks;
 import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.entity.ModEntities;
 import net.spidereye.animancy.entity.custom.DregZombieEntity;
+import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.event.ModEventListeners;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.networking.ModPackets;
@@ -48,7 +49,9 @@ public class AnimancyMod implements ModInitializer {
 		AttackEntityCallback.EVENT.register(ModEventListeners::rendSoulEnchantmentImplementation);
 
 		UseEntityCallback.EVENT.register(ModEventListeners::retrieveSoulShardFromDreg);
+		UseEntityCallback.EVENT.register(ModEventListeners::retrieveSoulFromRevenant);
 
 		FabricDefaultAttributeRegistry.register(ModEntities.DREG, DregZombieEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(ModEntities.REVENANT, RevenantEntity.setAttributes());
 	}
 }
