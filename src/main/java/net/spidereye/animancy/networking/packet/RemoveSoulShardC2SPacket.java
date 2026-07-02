@@ -18,24 +18,25 @@ public class RemoveSoulShardC2SPacket {
         ItemStack shard = new ItemStack(ModItems.SOUL_SHARD);
         int count;
         World world = entity.getWorld();
-
-        if (entity.isSneaking()) {
-            int soulSize = (int) SoulUtil.getSoul((IEntityDataSaver) entity);
-            if (soulSize <= 64) {
-                count = soulSize - 1;
+        int soulSize = (int) SoulUtil.getSoul((IEntityDataSaver) entity);
+        if (soulSize > 1) {
+            if (entity.isSneaking()) {
+                if (soulSize <= 64) {
+                    count = soulSize - 1;
+                } else {
+                    count = 64;
+                }
             } else {
-                count = 64;
+                count = 1;
             }
-        } else {
-            count = 1;
-        }
 
-        shard.setCount(count);
-        SoulUtil.removeSoul((IEntityDataSaver) entity, count);
+            shard.setCount(count);
+            SoulUtil.removeSoul((IEntityDataSaver) entity, count);
 
-        if (!entity.getInventory().insertStack(shard)) {
-            world.spawnEntity(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), shard));
+            if (!entity.getInventory().insertStack(shard)) {
+                world.spawnEntity(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), shard));
+            }
+            // Play sound?
         }
-        // Play sound?
     }
 }

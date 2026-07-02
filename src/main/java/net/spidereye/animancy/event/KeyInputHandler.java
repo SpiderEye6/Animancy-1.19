@@ -43,8 +43,8 @@ public class KeyInputHandler {
 
         soulRipKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 SOUL_RIP_KEY,
-                InputUtil.Type.MOUSE,
-                GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_Z,
                 KEY_CATEGORY_ANIMANCY
         ));
 
