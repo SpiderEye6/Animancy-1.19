@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.spidereye.animancy.AnimancyMod;
+import net.spidereye.animancy.entity.custom.DraconicRisenEntity;
 import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
@@ -28,6 +29,8 @@ public class AnimancerHudOverlay implements HudRenderCallback {
             "textures/gui/animancer/soul_rip_revenant_soul_element.png");
     private static final Identifier SOUL_RIP_DRAGON_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
             "textures/gui/animancer/soul_rip_dragon_soul_element.png");
+    private static final Identifier SOUL_RIP_DRACONIC_RISEN_SOUL_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
+            "textures/gui/animancer/soul_rip_draconic_risen_soul_element.png");
     private static final Identifier SOUL_SIZE_ELEMENT = new Identifier(AnimancyMod.MOD_ID,
             "textures/gui/animancer/soul_size_element.png");
 
@@ -81,10 +84,12 @@ public class AnimancerHudOverlay implements HudRenderCallback {
 
         double victimSoulSize = victim.getMaxHealth();
         Item soulType;
-        if (victim.isUndead() && !(victim instanceof RevenantEntity)) {
-            soulType = (new ItemStack(ModItems.SOUL_SHARD)).getItem();
-        } else if (victim instanceof RevenantEntity) {
+        if (victim instanceof RevenantEntity) {
             soulType = SoulUtil.makeRevenantSoulItemVariant(victimSoulSize).getItem();
+        } else if (victim instanceof DraconicRisenEntity) {
+            soulType = ModItems.DRACONIC_RISEN_SOUL;
+        } else if (victim.isUndead()) {
+            soulType = (new ItemStack(ModItems.SOUL_SHARD)).getItem();
         } else {
             soulType = SoulUtil.makeSoulItemVariant(victimSoulSize).getItem();
         }
@@ -95,8 +100,10 @@ public class AnimancerHudOverlay implements HudRenderCallback {
             RenderSystem.setShaderTexture(0, SOUL_RIP_SOUL_SHARD_ELEMENT);
         } else if (soulType == ModItems.SOUL) {
             RenderSystem.setShaderTexture(0, SOUL_RIP_SOUL_ELEMENT);
-        } else if (soulType == ModItems.DRACONIC_RISEN_SOUL) {
+        } else if (soulType == ModItems.DRAGON_SOUL) {
             RenderSystem.setShaderTexture(0, SOUL_RIP_DRAGON_SOUL_ELEMENT);
+        } else if (soulType == ModItems.DRACONIC_RISEN_SOUL) {
+            RenderSystem.setShaderTexture(0, SOUL_RIP_DRACONIC_RISEN_SOUL_ELEMENT);
         } else if (soulType == ModItems.REVENANT_SOUL) {
             RenderSystem.setShaderTexture(0, SOUL_RIP_REVENANT_SOUL_ELEMENT);
         }

@@ -13,6 +13,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.spidereye.animancy.entity.ModEntities;
+import net.spidereye.animancy.entity.custom.DraconicRisenEntity;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
 import org.jetbrains.annotations.Nullable;
@@ -33,9 +35,11 @@ public class DraconicRisenSoulItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            EntityType.ENDER_DRAGON.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false); // TODO: Change to a tamed Draconic Risen.
+            DraconicRisenEntity draconicRisen = ModEntities.DRACONIC_RISEN.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                    SpawnReason.MOB_SUMMONED, true, false);
             context.getStack().decrement(1);
+            draconicRisen.setOwner(context.getPlayer());
+            SoulUtil.setAnimancer((IEntityDataSaver) draconicRisen, true);
             return ActionResult.SUCCESS;
         }
 

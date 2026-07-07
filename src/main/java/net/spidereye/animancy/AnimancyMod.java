@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.spidereye.animancy.block.ModBlocks;
 import net.spidereye.animancy.enchantment.ModEnchantments;
 import net.spidereye.animancy.entity.ModEntities;
+import net.spidereye.animancy.entity.custom.DraconicRisenEntity;
 import net.spidereye.animancy.entity.custom.DregZombieEntity;
 import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.event.ModEventListeners;
@@ -50,8 +51,10 @@ public class AnimancyMod implements ModInitializer {
 
 		UseEntityCallback.EVENT.register(ModEventListeners::retrieveSoulShardFromDreg);
 		UseEntityCallback.EVENT.register(ModEventListeners::retrieveSoulFromRevenant);
+		UseEntityCallback.EVENT.register(ModEventListeners::retrieveSoulFromRisen);
 
 		FabricDefaultAttributeRegistry.register(ModEntities.DREG, DregZombieEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(ModEntities.REVENANT, RevenantEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(ModEntities.DRACONIC_RISEN, DraconicRisenEntity.setAttributes());
 	}
 }

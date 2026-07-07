@@ -195,7 +195,7 @@ public class SoulUtil {
     public static void emitSoulGroan(LivingEntity entity, float volume) {
         if (entity.getWorld() instanceof ServerWorld world) {
             BlockPos pos = entity.getBlockPos();
-            float pitch = (float) (0.5 + (0.5 * getSoulRipCounter((IEntityDataSaver) entity)));
+            float pitch = (float) (2.0 * getSoulRipCounter((IEntityDataSaver) entity));
             world.playSound(null, pos, SoundEvents.BLOCK_NOTE_BLOCK_BASS, SoundCategory.PLAYERS, volume, pitch);
         }
     }

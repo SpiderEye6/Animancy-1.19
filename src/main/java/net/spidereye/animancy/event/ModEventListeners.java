@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.spidereye.animancy.enchantment.ModEnchantments;
+import net.spidereye.animancy.entity.custom.DraconicRisenEntity;
 import net.spidereye.animancy.entity.custom.DregZombieEntity;
 import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
@@ -106,6 +107,24 @@ public class ModEventListeners {
                         world.spawnEntity(new ItemEntity(world, revenant.getX(), revenant.getY(), revenant.getZ(), revenantSoul));
                     }
                     revenant.kill();
+
+                    return ActionResult.SUCCESS;
+                }
+            }
+        }
+
+        return ActionResult.PASS;
+    }
+
+    public static ActionResult retrieveSoulFromRisen(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+        if (!world.isClient() && hand == Hand.MAIN_HAND) {
+            if (entity instanceof DraconicRisenEntity risen) {
+                if (risen.getOwner() == player && SoulUtil.isAnimancer((IEntityDataSaver) player) && risen.isAlive()) {
+                    ItemStack risenSoul = new ItemStack(ModItems.DRACONIC_RISEN_SOUL);
+                    if (player.getInventory().insertStack(risenSoul)) {
+                        world.spawnEntity(new ItemEntity(world, risen.getX(), risen.getY(), risen.getZ(), risenSoul));
+                    }
+                    risen.kill();
 
                     return ActionResult.SUCCESS;
                 }

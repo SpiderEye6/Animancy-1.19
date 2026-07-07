@@ -20,7 +20,8 @@ public class ModLivingEntityTickMixin {
                 if (SoulUtil.getSoulRipCounter((IEntityDataSaver) livingEntity) > 0.1) {
                     SoulUtil.emitSoulGroan(livingEntity, 1.0f);
                 }
-                SoulUtil.removeSoulRipCounter((IEntityDataSaver) livingEntity, 0.5);
+                double rip = Math.max(livingEntity.getMaxHealth(), SoulUtil.getSoul((IEntityDataSaver) livingEntity));
+                SoulUtil.removeSoulRipCounter((IEntityDataSaver) livingEntity, rip / 100);
             }
         }
     }

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.spidereye.animancy.client.AnimancerHudOverlay;
 import net.spidereye.animancy.client.SoulRipHudOverlay;
 import net.spidereye.animancy.entity.ModEntities;
+import net.spidereye.animancy.entity.client.renderer.DraconicRisenRenderer;
 import net.spidereye.animancy.entity.client.renderer.DregZombieRenderer;
 import net.spidereye.animancy.entity.client.renderer.RevenantRenderer;
 import net.spidereye.animancy.event.KeyInputHandler;
@@ -26,5 +27,6 @@ public class AnimancyModClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.DREG, DregZombieRenderer::new);
         EntityRendererRegistry.register(ModEntities.REVENANT, RevenantRenderer::new);
+        EntityRendererRegistry.register(ModEntities.DRACONIC_RISEN, DraconicRisenRenderer::new);
     }
 }

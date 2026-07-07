@@ -69,7 +69,7 @@ public class DregZombieEntity extends TameableEntity implements IAnimatable {
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.goalSelector.add(10, new FollowOwnerGoal(this, 0.2f, 3f, 10f, true));
-        this.goalSelector.add(20, new AttackWithOwnerGoal(this));
+        this.goalSelector.add(1, new AttackWithOwnerGoal(this));
         initCustomGoals();
     }
 

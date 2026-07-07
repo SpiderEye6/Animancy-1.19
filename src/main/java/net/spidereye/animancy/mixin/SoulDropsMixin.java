@@ -2,6 +2,7 @@ package net.spidereye.animancy.mixin;
 
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandOutput;
@@ -9,6 +10,7 @@ import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.entity.EntityLike;
+import net.spidereye.animancy.entity.custom.DraconicRisenEntity;
 import net.spidereye.animancy.entity.custom.RevenantEntity;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.util.IEntityDataSaver;
@@ -34,13 +36,23 @@ public abstract class SoulDropsMixin {
                 World world = adversary.getWorld();
                 if (!world.isClient() && SoulUtil.isAnimancer((IEntityDataSaver) adversary)) {
                     if (SoulUtil.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
-                        if (this.isUndead() && !(entity instanceof RevenantEntity)) {
-                            handleSoulShardSpawns(adversary);
-                        } else if (entity instanceof RevenantEntity) {
+                        if (entity instanceof RevenantEntity) {
                             ItemStack soul = SoulUtil.makeRevenantSoulItemVariant(this.getMaxHealth());
                             BlockPos pos = entity.getBlockPos();
                             ItemEntity soulShard = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
                             world.spawnEntity(soulShard);
+                        } else if (entity instanceof DraconicRisenEntity) {
+                            ItemStack soul = new ItemStack(ModItems.DRACONIC_RISEN_SOUL);
+                            BlockPos pos = entity.getBlockPos();
+                            ItemEntity risenSoul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
+                            world.spawnEntity(risenSoul);
+                        } else if (entity instanceof EnderDragonEntity) {
+                            ItemStack soul = new ItemStack(ModItems.DRAGON_SOUL);
+                            BlockPos pos = entity.getBlockPos();
+                            ItemEntity dragonSoul = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), soul);
+                            world.spawnEntity(dragonSoul);
+                        } else if (this.isUndead()) {
+                            handleSoulShardSpawns(adversary);
                         } else {
                             ItemStack soul = SoulUtil.makeSoulItemVariant(this.getMaxHealth());
                             BlockPos pos = entity.getBlockPos();
