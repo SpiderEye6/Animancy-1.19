@@ -59,6 +59,12 @@ public class ModEventListeners {
             ItemStack weapon = player.getMainHandStack();
             if (SoulUtil.hasEnchantment(weapon, ModEnchantments.REND_SOUL) &&
                     !victim.isUndead() && !(victim instanceof EnderDragonEntity)) {
+
+                if (victim instanceof PlayerEntity victimPlayer &&
+                        (victimPlayer.isCreative() || victimPlayer.isSpectator())) {
+                    return ActionResult.PASS;
+                }
+
                 double soulDamage = 1.0D;
                 ItemStack soulPiece;
                 if (weapon.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
