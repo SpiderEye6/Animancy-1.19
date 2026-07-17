@@ -130,4 +130,9 @@ public class DraconicRisenEntity extends TameableEntity implements IAnimatable {
     public boolean isClimbing() {
         return false;
     }
+
+    @Override
+    public boolean shouldDropXp() {
+        return false;
+    }
 }

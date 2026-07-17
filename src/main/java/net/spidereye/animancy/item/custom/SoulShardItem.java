@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -26,10 +28,12 @@ public class SoulShardItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            ModEntities.DREG.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false).setOwner(context.getPlayer());
-            context.getStack().decrement(1);
-            return ActionResult.SUCCESS;
+            if (SoulUtil.isAnimancer((IEntityDataSaver) context.getPlayer())) {
+                ModEntities.DREG.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                        SpawnReason.MOB_SUMMONED, true, false).setOwner(context.getPlayer());
+                context.getStack().decrement(1);
+                return ActionResult.SUCCESS;
+            }
         }
 
         return ActionResult.SUCCESS;
@@ -38,7 +42,7 @@ public class SoulShardItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
-            if (hand == Hand.MAIN_HAND && !(RaycastUtil.raycastEntity() instanceof DregZombieEntity)) {
+            if (hand == Hand.MAIN_HAND) {
                 if (!SoulUtil.isAnimancer((IEntityDataSaver) user)) {
                     SoulUtil.setAnimancer((IEntityDataSaver) user, true);
                     SoulUtil.setSoul((IEntityDataSaver) user, 20.0D);
@@ -63,11 +67,11 @@ public class SoulShardItem extends Item {
                     if (!SoulUtil.hasEnchantment(mainHand, ModEnchantments.REND_SOUL)) {
                         if (mainHand.getItem() == ModItems.SOUL_STEEL_SWORD) {
                             mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1);
-                            // Add Sound Effect?
+                            world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
                             offHand.decrement(1);
                         } else if (mainHand.getItem() == ModItems.ANIMANTIC_WAR_SCYTHE) {
                             mainHand.addEnchantment(ModEnchantments.REND_SOUL, 1);
-                            // Add Sound Effect?
+                            world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
                             offHand.decrement(1);
                         }
                     }

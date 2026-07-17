@@ -8,9 +8,6 @@
     "ModLivingEntityTickMixin",
     "SoulDropsMixin"
   ],
-  "client": [
-    "ExampleMixin"
-  ],
   "injectors": {
     "defaultRequire": 1
   }

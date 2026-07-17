@@ -9,6 +9,8 @@ import net.spidereye.animancy.util.IEntityDataSaver;
 public class SyncSoulDataS2CPacket {
     public static void recieve(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        ((IEntityDataSaver) client.player).getPersistentData().putDouble("soul_size", buf.readDouble());
+        if (client.player != null) {
+            ((IEntityDataSaver) client.player).getPersistentData().putDouble("soul_size", buf.readDouble());
+        }
     }
 }

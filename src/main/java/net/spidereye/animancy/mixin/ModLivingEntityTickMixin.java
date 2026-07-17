@@ -1,6 +1,5 @@
 package net.spidereye.animancy.mixin;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
@@ -15,10 +14,9 @@ public class ModLivingEntityTickMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     public void injectTick(CallbackInfo ci) {
         if ((Object) this instanceof LivingEntity livingEntity) {
-            MinecraftClient client = MinecraftClient.getInstance();
-            if (!livingEntity.getWorld().isClient() && client.player != null) {
+            if (livingEntity != null) {
                 if (SoulUtil.getSoulRipCounter((IEntityDataSaver) livingEntity) > 0.1) {
-                    SoulUtil.emitSoulGroan(livingEntity, 1.0f);
+                    SoulUtil.emitSoulGroan(livingEntity, 0.5f);
                 }
                 double rip = Math.max(livingEntity.getMaxHealth(), SoulUtil.getSoul((IEntityDataSaver) livingEntity));
                 SoulUtil.removeSoulRipCounter((IEntityDataSaver) livingEntity, rip / 100);

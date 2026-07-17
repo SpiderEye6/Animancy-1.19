@@ -34,7 +34,7 @@ public abstract class SoulDropsMixin {
         if (adversary != null) {
             if ((Object) this instanceof LivingEntity entity) {
                 World world = adversary.getWorld();
-                if (!world.isClient() && SoulUtil.isAnimancer((IEntityDataSaver) adversary)) {
+                if (!world.isClient()) {
                     if (SoulUtil.isAnimancer((IEntityDataSaver) adversary) || holdingAnimanticWeapon(adversary)) {
                         if (entity instanceof RevenantEntity) {
                             ItemStack soul = SoulUtil.makeRevenantSoulItemVariant(this.getMaxHealth());

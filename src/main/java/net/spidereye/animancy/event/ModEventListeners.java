@@ -31,17 +31,26 @@ import net.spidereye.animancy.util.IEntityDataSaver;
 import net.spidereye.animancy.util.SoulUtil;
 
 public class ModEventListeners {
+    private static int MIN_ANIMANCER_TRANSFER = 5;
+
     // Handles transfering of soul data upon death.
     public static void transferSoulDataOnDeath(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         boolean isAnimancer = SoulUtil.isAnimancer((IEntityDataSaver) oldPlayer);
         double soulSize = SoulUtil.getSoul((IEntityDataSaver) oldPlayer);
         if (!oldPlayer.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-            SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
-            SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize / 2.0D);
+            double half = soulSize / 2;
+            double decrement = soulSize - 20;
+            soulSize = Math.max(half, decrement);
+
+            if (soulSize >= MIN_ANIMANCER_TRANSFER) {
+                SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
+            } else {
+                SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, false);
+            }
         } else {
             SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
-            SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize);
         }
+        SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize);
     }
 
     // Handles implementation of the Rend Soul enchantment because onTargetDamaged() gets called twice for some reason.

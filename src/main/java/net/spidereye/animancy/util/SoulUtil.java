@@ -15,6 +15,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,6 +27,7 @@ import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.item.ModToolMaterial;
 import net.spidereye.animancy.networking.ModPackets;
 
+import javax.tools.Tool;
 import java.util.Map;
 
 public class SoulUtil {
@@ -135,8 +137,8 @@ public class SoulUtil {
             soulRipCounter -= amount;
         }
         nbt.putDouble("soulrip_counter", soulRipCounter);
-        if (entity instanceof PlayerEntity player) {
-            syncSoulRipCounter(soulRipCounter, (ServerPlayerEntity) player);
+        if (entity instanceof ServerPlayerEntity player) {
+            syncSoulRipCounter(soulRipCounter, player);
         }
         return soulRipCounter;
     }
@@ -145,16 +147,20 @@ public class SoulUtil {
         NbtCompound nbt = entity.getPersistentData();
         double soulRipCounter = amount;
         nbt.putDouble("soulrip_counter", soulRipCounter);
-        if (entity instanceof PlayerEntity player) {
-            syncSoulRipCounter(soulRipCounter, (ServerPlayerEntity) player);
+        if (entity instanceof ServerPlayerEntity player) {
+            syncSoulRipCounter(soulRipCounter, player);
         }
         return soulRipCounter;
     }
 
     public static double getSoulRipCounter(IEntityDataSaver entity) {
-        NbtCompound nbt = entity.getPersistentData();
-        double soulRipCounter = nbt.getDouble("soulrip_counter");
-        return soulRipCounter;
+        if (entity != null) {
+            NbtCompound nbt = entity.getPersistentData();
+            double soulRipCounter = nbt.getDouble("soulrip_counter");
+            return soulRipCounter;
+        }
+
+        return 0;
     }
 
     public static void syncSoulRipCounter(double soulRipCounter, ServerPlayerEntity player) {
@@ -256,9 +262,7 @@ public class SoulUtil {
 
     public static ItemStack makeSoulItemVariant(double size) {
         ItemStack soul;
-        if (size >= 200) {
-            soul = new ItemStack(ModItems.DRAGON_SOUL);
-        } else if (size > 1.0) {
+         if (size > 1.0) {
             soul = new ItemStack(ModItems.SOUL);
             setSoul(soul, size);
         } else {
@@ -269,9 +273,7 @@ public class SoulUtil {
 
     public static ItemStack makeRevenantSoulItemVariant(double size) {
         ItemStack revenantSoul;
-        if (size >= 200) {
-            revenantSoul = new ItemStack(ModItems.DRACONIC_RISEN_SOUL);
-        } else if (size > 1.0) {
+        if (size > 1.0) {
             revenantSoul = new ItemStack(ModItems.REVENANT_SOUL);
             setSoul(revenantSoul, size);
         } else {
@@ -281,15 +283,16 @@ public class SoulUtil {
     }
 
     public static boolean isAnimanticWeapon(ItemStack item) {
-        if (item.getItem() instanceof ToolItem weapon) {
-            return weapon.getMaterial() == ModToolMaterial.SOUL_STEEL;
+        if (item.getItem() instanceof ToolItem tool) {
+            return tool.getMaterial() == ModToolMaterial.SOUL_STEEL;
         }
+
         return false;
     }
 
     public static void killWithAnimancy(PlayerEntity attacker, LivingEntity victim) {
         attacker.getWorld().playSound(null, victim.getBlockPos(), SoundEvents.BLOCK_SCULK_SHRIEKER_SHRIEK,
-                SoundCategory.PLAYERS, 1.0f, 0.1f);
+                SoundCategory.PLAYERS, 0.5f, 0.1f);
         victim.damage(DamageSource.player(attacker), Float.MAX_VALUE);
     }
 }

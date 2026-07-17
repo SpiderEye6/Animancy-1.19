@@ -1,5 +1,6 @@
 package net.spidereye.animancy.client;
 
+import com.eliotlash.mclib.math.functions.limit.Min;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -57,16 +58,18 @@ public class AnimancerHudOverlay implements HudRenderCallback {
     }
 
     private void renderSoulSizeElement(MatrixStack matrixStack, float tickDelta, int x, int y) {
-        PlayerEntity player = MinecraftClient.getInstance().player;
+        MinecraftClient client = MinecraftClient.getInstance();
+        PlayerEntity player = client.player;
         String soulSize = Integer.toString((int) Math.floor(SoulUtil.getSoul((IEntityDataSaver) player)));
         int color = 0xFFFFFFFF;
+        int width = client.getWindow().getScaledWidth();
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, SOUL_SIZE_ELEMENT);
-        DrawableHelper.drawTexture(matrixStack, x + 394, y - 54, 0, 0, 16, 16,
+        DrawableHelper.drawTexture(matrixStack, width - 38, y - 54, 0, 0, 16, 16,
                 16, 16);
-        DrawableHelper.drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, soulSize, x + 406, y - 37, color);
+        DrawableHelper.drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, soulSize, width - 30, y - 37, color);
     }
 
     private void renderCanSoulRip(MatrixStack matrixStack, float tickDelta, int x, int y) {
@@ -84,6 +87,13 @@ public class AnimancerHudOverlay implements HudRenderCallback {
 
         double victimSoulSize = victim.getMaxHealth();
         Item soulType;
+
+        if (victim instanceof PlayerEntity animancer) {
+            if (SoulUtil.isAnimancer((IEntityDataSaver) animancer)) {
+                victimSoulSize = SoulUtil.getSoul((IEntityDataSaver) animancer);
+            }
+        }
+
         if (victim instanceof RevenantEntity) {
             soulType = SoulUtil.makeRevenantSoulItemVariant(victimSoulSize).getItem();
         } else if (victim instanceof DraconicRisenEntity) {

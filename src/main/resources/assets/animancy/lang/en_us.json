@@ -27,5 +27,6 @@
   "itemGroup.animancy.animancy": "Animancy",
 
   "key.category.animancy.keybinds": "Animancy",
-  "key.animancy.remove_soul_shard_key": "Remove Soul Shard Key"
+  "key.animancy.remove_soul_shard_key": "Remove Soul Shard Key",
+  "key.animancy.soul_rip_key": "Soul Rip Key"
 }

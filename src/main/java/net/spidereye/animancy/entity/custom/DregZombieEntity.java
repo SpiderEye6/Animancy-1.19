@@ -126,4 +126,9 @@ public class DregZombieEntity extends TameableEntity implements IAnimatable {
     public boolean canBeLeashedBy(PlayerEntity player) {
         return player == getOwner();
     }
+
+    @Override
+    public boolean shouldDropXp() {
+        return false;
+    }
 }

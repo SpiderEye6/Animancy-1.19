@@ -45,13 +45,15 @@ public class RevenantSoulItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            RevenantEntity revenant = ModEntities.REVENANT.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false);
-            context.getStack().decrement(1);
-            revenant.setOwner(context.getPlayer());
-            SoulUtil.addHealthModifier(revenant, getSoulSize(context.getStack()) - revenant.getMaxHealth(), "sync_soul");
-            SoulUtil.setAnimancer((IEntityDataSaver) revenant, true);
-            return ActionResult.SUCCESS;
+            if (SoulUtil.isAnimancer((IEntityDataSaver) context.getPlayer())) {
+                RevenantEntity revenant = ModEntities.REVENANT.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                        SpawnReason.MOB_SUMMONED, true, false);
+                context.getStack().decrement(1);
+                revenant.setOwner(context.getPlayer());
+                SoulUtil.addHealthModifier(revenant, getSoulSize(context.getStack()) - revenant.getMaxHealth(), "sync_soul");
+                SoulUtil.setAnimancer((IEntityDataSaver) revenant, true);
+                return ActionResult.SUCCESS;
+            }
         }
 
         return ActionResult.SUCCESS;

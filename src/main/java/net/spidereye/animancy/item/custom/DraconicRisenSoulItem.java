@@ -35,12 +35,14 @@ public class DraconicRisenSoulItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient() && context.getHand() == Hand.MAIN_HAND) {
-            DraconicRisenEntity draconicRisen = ModEntities.DRACONIC_RISEN.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
-                    SpawnReason.MOB_SUMMONED, true, false);
-            context.getStack().decrement(1);
-            draconicRisen.setOwner(context.getPlayer());
-            SoulUtil.setAnimancer((IEntityDataSaver) draconicRisen, true);
-            return ActionResult.SUCCESS;
+            if (SoulUtil.isAnimancer((IEntityDataSaver) context.getPlayer())) {
+                DraconicRisenEntity draconicRisen = ModEntities.DRACONIC_RISEN.spawn(((ServerWorld) context.getWorld()), null, null, null, context.getBlockPos(),
+                        SpawnReason.MOB_SUMMONED, true, false);
+                context.getStack().decrement(1);
+                draconicRisen.setOwner(context.getPlayer());
+                SoulUtil.setAnimancer((IEntityDataSaver) draconicRisen, true);
+                return ActionResult.SUCCESS;
+            }
         }
 
         return ActionResult.PASS;
@@ -48,7 +50,7 @@ public class DraconicRisenSoulItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient() && hand == Hand.MAIN_HAND) {
+        if (!world.isClient() && hand == Hand.MAIN_HAND && SoulUtil.isAnimancer((IEntityDataSaver) user)) {
             if (SoulUtil.isAnimancer((IEntityDataSaver) user)) {
                 SoulUtil.addSoul((IEntityDataSaver) user, soulSize);
                 user.heal((float) soulSize/ 100.0f);
