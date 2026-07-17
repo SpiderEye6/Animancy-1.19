@@ -31,11 +31,11 @@ public class ModItems {
                     new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1).fireproof().rarity(Rarity.EPIC)));
 
     public static final Item SOUL_CHECKER_DEBUG = registerItem("soul_checker_debug",
-            new SoulDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new SoulDataCheckerItem(new FabricItemSettings().maxCount(1)));
     public static final Item ANIMANCY_CHECKER_DEBUG = registerItem("animancy_checker_debug",
-            new AnimancyDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new AnimancyDataCheckerItem(new FabricItemSettings().maxCount(1)));
     public static final Item SOUL_RIP_COUNTER_CHECKER_DEBUG = registerItem("soul_rip_counter_checker_debug",
-            new SoulRipCounterDataCheckerItem(new FabricItemSettings().group(ModItemGroup.ANIMANCY).maxCount(1)));
+            new SoulRipCounterDataCheckerItem(new FabricItemSettings().maxCount(1)));
 
 
 
