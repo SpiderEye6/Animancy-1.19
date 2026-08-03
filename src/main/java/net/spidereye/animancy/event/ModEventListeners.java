@@ -51,6 +51,8 @@ public class ModEventListeners {
             SoulUtil.setAnimancer((IEntityDataSaver) newPlayer, isAnimancer);
         }
         SoulUtil.setSoul((IEntityDataSaver) newPlayer, soulSize);
+
+        SoulUtil.setSoulRipCounter((IEntityDataSaver) newPlayer, 0);
     }
 
     // Handles implementation of the Rend Soul enchantment because onTargetDamaged() gets called twice for some reason.

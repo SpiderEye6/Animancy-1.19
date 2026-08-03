@@ -20,6 +20,10 @@ public class ModLivingEntityTickMixin {
                 }
                 double rip = Math.max(livingEntity.getMaxHealth(), SoulUtil.getSoul((IEntityDataSaver) livingEntity));
                 SoulUtil.removeSoulRipCounter((IEntityDataSaver) livingEntity, rip / 100);
+
+                if (livingEntity.isDead()) {
+                    SoulUtil.setSoulRipCounter((IEntityDataSaver) livingEntity, 0);
+                }
             }
         }
     }

@@ -39,28 +39,28 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(ModItems.SOUL_STEEL_SWORD)
                 .pattern("I")
                 .pattern("I")
-                .pattern("S")
+                .pattern("B")
                 .input('I', ModItems.SOUL_STEEL_INGOT)
-                .input('S', Items.STICK)
+                .input('B', Items.BONE)
                 .criterion(RecipeProvider.hasItem(ModItems.SOUL_STEEL_INGOT),
                         RecipeProvider.conditionsFromItem(ModItems.SOUL_STEEL_INGOT))
-                .criterion(RecipeProvider.hasItem(Items.STICK),
-                        RecipeProvider.conditionsFromItem(Items.STICK))
+                .criterion(RecipeProvider.hasItem(Items.BONE),
+                        RecipeProvider.conditionsFromItem(Items.BONE))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.SOUL_STEEL_SWORD)));
 
         ShapedRecipeJsonBuilder.create(ModItems.ANIMANTIC_WAR_SCYTHE)
-                .pattern("IIS")
+                .pattern("IIB")
                 .pattern(" D ")
-                .pattern("S  ")
+                .pattern("B  ")
                 .input('I', ModItems.SOUL_STEEL_INGOT)
                 .input('D', ModItems.DRACONIC_RISEN_SOUL)
-                .input('S', Items.STICK)
+                .input('B', Items.BONE)
                 .criterion(RecipeProvider.hasItem(ModItems.SOUL_STEEL_INGOT),
                         RecipeProvider.conditionsFromItem(ModItems.SOUL_STEEL_INGOT))
                 .criterion(RecipeProvider.hasItem(ModItems.DRACONIC_RISEN_SOUL),
                         RecipeProvider.conditionsFromItem(ModItems.DRACONIC_RISEN_SOUL))
-                .criterion(RecipeProvider.hasItem(Items.STICK),
-                        RecipeProvider.conditionsFromItem(Items.STICK))
+                .criterion(RecipeProvider.hasItem(Items.BONE),
+                        RecipeProvider.conditionsFromItem(Items.BONE))
                 .offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(ModItems.ANIMANTIC_WAR_SCYTHE)));
 
         offerReversibleCompactingRecipes(exporter, ModItems.SOUL_STEEL_INGOT, ModBlocks.SOUL_STEEL_BLOCK);
