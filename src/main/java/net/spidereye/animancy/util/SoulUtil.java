@@ -22,6 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.spidereye.animancy.item.ModItems;
 import net.spidereye.animancy.item.ModToolMaterial;
@@ -29,35 +30,49 @@ import net.spidereye.animancy.networking.ModPackets;
 
 import javax.tools.Tool;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class SoulUtil {
     public static double addSoul(IEntityDataSaver player, double amount) {
         NbtCompound nbt = player.getPersistentData();
         double soul = nbt.getDouble("soul_size");
+        UUID uuid = null;
         soul += amount;
         nbt.putDouble("soul_size", soul);
-        syncSoul(soul, (ServerPlayerEntity) player);
+        if (player instanceof PlayerEntity) {
+            uuid = ((PlayerEntity) player).getUuid();
+        }
+        syncSoul(soul, (ServerPlayerEntity) player, uuid);
         return soul;
     }
 
     public static double removeSoul(IEntityDataSaver player, double amount) {
         NbtCompound nbt = player.getPersistentData();
         double soul = nbt.getDouble("soul_size");
+        UUID uuid = null;
         if (soul - amount <= 0) {
             soul = 0.1D;
         } else {
             soul -= amount;
         }
         nbt.putDouble("soul_size", soul);
-        syncSoul(soul, (ServerPlayerEntity) player);
+        if (player instanceof PlayerEntity) {
+            uuid = ((PlayerEntity) player).getUuid();
+        }
+        syncSoul(soul, (ServerPlayerEntity) player, uuid);
         return soul;
     }
 
     public static double setSoul(IEntityDataSaver player, double amount) {
         NbtCompound nbt = player.getPersistentData();
         double soul = amount;
+        UUID uuid = null;
         nbt.putDouble("soul_size", soul);
-        syncSoul(soul, (ServerPlayerEntity) player);
+        if (player instanceof PlayerEntity) {
+            uuid = ((PlayerEntity) player).getUuid();
+        }
+        syncSoul(soul, (ServerPlayerEntity) player, uuid);
         return soul;
     }
 
@@ -67,11 +82,14 @@ public class SoulUtil {
         return soul;
     }
 
-    public static void syncSoul(double soul, ServerPlayerEntity player) {
+    public static void syncSoul(double soul, ServerPlayerEntity player, UUID uuid) {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeDouble(soul);
-        ServerPlayNetworking.send(player, ModPackets.SOUL_DATA_SYNC, buffer);
-        syncAnimancer(isAnimancer((IEntityDataSaver) player), player);
+        buffer.writeUuid(uuid);
+        for (ServerPlayerEntity players : player.getServer().getPlayerManager().getPlayerList()) {
+            ServerPlayNetworking.send(players, ModPackets.SOUL_DATA_SYNC, buffer);
+        }
+        syncAnimancer(isAnimancer((IEntityDataSaver) player), player, uuid);
     }
 
     public static double addSoul(ItemStack item, ServerPlayerEntity owner, double amount) {
@@ -226,8 +244,12 @@ public class SoulUtil {
 
     public static void setAnimancer(IEntityDataSaver player, boolean isAnimancer) {
         NbtCompound nbt = player.getPersistentData();
+        UUID uuid = null;
         nbt.putBoolean("is_animancer", isAnimancer);
-        syncAnimancer(isAnimancer, (ServerPlayerEntity) player);
+        if (player instanceof ServerPlayerEntity) {
+            uuid = ((ServerPlayerEntity) player).getUuid();
+        }
+        syncAnimancer(isAnimancer, (ServerPlayerEntity) player, uuid);
     }
 
     public static boolean isAnimancer(IEntityDataSaver player) {
@@ -235,9 +257,10 @@ public class SoulUtil {
         return nbt.getBoolean("is_animancer");
     }
 
-    public static void syncAnimancer(boolean isAnimancer, ServerPlayerEntity player) {
+    public static void syncAnimancer(boolean isAnimancer, ServerPlayerEntity player, UUID uuid) {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeBoolean(isAnimancer);
+        buffer.writeUuid(uuid);
         ServerPlayNetworking.send(player, ModPackets.ANIMANCER_DATA_SYNC, buffer);
     }
 

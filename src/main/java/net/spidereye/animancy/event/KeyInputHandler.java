@@ -21,7 +21,7 @@ public class KeyInputHandler {
 
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (removeSoulShardKey.wasPressed()) {
+            if (removeSoulShardKey.wasPressed() && SoulUtil.isAnimancer((IEntityDataSaver) client.player)) {
                 ClientPlayNetworking.send(ModPackets.REMOVE_SOUL_SHARD, PacketByteBufs.create());
             }
         });
