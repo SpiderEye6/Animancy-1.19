@@ -6,11 +6,19 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.spidereye.animancy.util.IEntityDataSaver;
 
+import java.util.UUID;
+
 public class SyncSoulDataS2CPacket {
     public static void recieve(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         if (client.player != null) {
-            ((IEntityDataSaver) client.player).getPersistentData().putDouble("soul_size", buf.readDouble());
+            double size = buf.readDouble();
+            UUID uuid = buf.readUuid();
+            if (uuid == null) {
+                ((IEntityDataSaver) client.player).getPersistentData().putDouble("soul_size", size);
+            } else {
+                ((IEntityDataSaver) client.world.getPlayerByUuid(uuid)).getPersistentData().putDouble("soul_size", size);
+            }
         }
     }
 }

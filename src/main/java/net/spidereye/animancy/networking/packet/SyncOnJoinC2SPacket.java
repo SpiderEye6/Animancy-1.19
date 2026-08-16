@@ -15,8 +15,8 @@ public class SyncOnJoinC2SPacket {
         boolean isAnimancer = SoulUtil.isAnimancer((IEntityDataSaver) entity);
         double soulRipCounter = SoulUtil.getSoulRipCounter((IEntityDataSaver) entity);
 
-        SoulUtil.syncSoul(soul, entity);
-        SoulUtil.syncAnimancer(isAnimancer, entity);
+        SoulUtil.syncSoul(soul, entity, entity.getUuid());
+        SoulUtil.syncAnimancer(isAnimancer, entity, entity.getUuid());
         SoulUtil.syncSoulRipCounter(soulRipCounter, entity);
     }
 }
