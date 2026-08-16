@@ -51,6 +51,7 @@ public class RevenantSoulItem extends Item {
                 context.getStack().decrement(1);
                 revenant.setOwner(context.getPlayer());
                 SoulUtil.addHealthModifier(revenant, getSoulSize(context.getStack()) - revenant.getMaxHealth(), "sync_soul");
+                revenant.setHealth(revenant.getMaxHealth());
                 SoulUtil.setAnimancer((IEntityDataSaver) revenant, true);
                 return ActionResult.SUCCESS;
             }
